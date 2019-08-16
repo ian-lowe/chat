@@ -1,0 +1,60 @@
+{% extends "template.html" %}
+{% block title %}Index{% endblock %}
+{% block js %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+    <script>
+        var socket = io();
+        var nickname = "{{ nickname }}"
+        socket.on("connect", function () {
+            document.querySelectorAll("button")[0].addEventListener("click", function() {
+                let count = 1;
+                socket.emit("my event", nickname, count);
+            });
+
+            document.querySelectorAll("button")[1].addEventListener("click", function () {
+                let count = -1;
+                socket.emit("my event", nickname, count);
+            });
+
+            document.querySelectorAll("button")[2].addEventListener("click", function () {
+                socket.emit("join", "rm1");
+            });
+
+
+            socket.emit("user connected", nickname);
+        });
+
+        socket.on("my response", function(nickname, counter) {
+            document.querySelectorAll("li")[0].innerText = counter;
+            document.querySelectorAll("li")[1].innerText = nickname;
+        });
+
+        socket.on("on connection", function(nickname) {
+            document.querySelectorAll("li")[2].innerText = nickname + " has connected.";
+        });
+
+
+    </script>
+{% endblock %}
+{% block body %}
+    <div class="parent">
+        <div class="div1">div1</div>
+        <div class="div2">
+            <input type="text" placeholder="Create Channel..">
+            <button>+</button>
+        </div>
+        <div class="div3">
+            <ul>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+            <button>UP</button>
+            <button>DOWN</button>
+            <button>RM CHANGE</button>
+        </div>
+        <div class="div4">
+            <input type="text" placeholder="type your message here...">
+        </div>
+    </div>
+{% endblock %}
