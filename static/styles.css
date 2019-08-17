@@ -26,10 +26,25 @@ html, body {
 }
 
 .div1 {
+    background-color: pink;
+    /* grid properties */
     padding: 5px;
     grid-row: 1 / -1;
     grid-column: 1 / 5;
-    background-color: pink;
+    /* flex properties */
+    display: flex;
+    flex-direction: column;
+}
+
+.div1 div {
+    flex-grow: 1;
+    flex-shrink: 0;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgba(0, 0, 0, 0.24);
 }
 
 .div2 {
@@ -38,25 +53,29 @@ html, body {
 }
 
 .div2 input {
-    width: 50%;
+    width: 75%;
     height: 100%;
     font-size: 3vmax;
-    text-align: center;
-    padding: 0 5px 0 5px;
+    /* text-align: center; */
+    padding: 0 15px 0 15px;
     border: none;
     background-color: bisque;
+    box-shadow: none;
+    transition: box-shadow 0.4s;
 }
 
 .div2 input:hover {
-    box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.2) inset;
+    box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.1) inset;
+    transition: box-shadow 0.4s;
 }
 
 .div2 input:focus {
-    box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.2) inset;
+    /* !important retains box shadow on focus, regardless of mouse exit */
+    box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.1) inset !important;
 }
 
 .div2 button {
-    width: 50%;
+    width: 25%;
     height: 100%;
     font-size: 3vmax;
     float: right;
@@ -65,12 +84,9 @@ html, body {
 }
 
 .div2 button:hover {
-    border: 1px solid rgba(0, 0, 0, 0.2);
+    background-color: #cecece;
+    transition: background-color 0.4s;
 }
-
-/* .div2 button:focus {
-    box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.1) inset;
-} */
 
 .div3 {
     padding: 5px;
@@ -90,16 +106,20 @@ html, body {
     width: 100%;
     height: 100%;
     font-size: 3vmax;
-    padding: 0 5px 0 5px;
+    padding: 0 15px 0 15px;
     border: none;
+    box-shadow: none;
+    transition: box-shadow 0.4s;
 }
 
 .div4 input:hover {
     box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.2) inset;
+    transition: box-shadow 0.4s;
 }
 
 .div4 input:focus {
-    box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.3) inset;
+    /* !important retains box shadow on focus, regardless of mouse exit */
+    box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.3) inset !important;
 }
 
 input:focus, textarea:focus {
