@@ -16,6 +16,21 @@ html, body {
     height: 100%;
 }
 
+.div1::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 8px;
+}
+
+.div1::-webkit-scrollbar-track {
+    background-color: rgba(57,57,57, .6);
+    border-radius: 8px;
+}
+
+.div1::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background-color: rgba(145, 72, 129, 0.6);
+}
+
 .parent { 
     display: grid; 
     height: 100%;
@@ -27,6 +42,7 @@ html, body {
 
 .div1 {
     background-color: pink;
+    overflow: auto;
     /* grid properties */
     padding: 5px;
     grid-row: 1 / -1;
@@ -37,8 +53,7 @@ html, body {
 }
 
 .div1 div {
-    flex-grow: 1;
-    flex-shrink: 0;
+    min-height: 50px;
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -56,7 +71,6 @@ html, body {
     width: 75%;
     height: 100%;
     font-size: 3vmax;
-    /* text-align: center; */
     padding: 0 15px 0 15px;
     border: none;
     background-color: bisque;
@@ -81,6 +95,8 @@ html, body {
     float: right;
     text-align: center;
     border: none;
+    background-color: #dddddd;
+    transition: background-color 0.4s;
 }
 
 .div2 button:hover {
