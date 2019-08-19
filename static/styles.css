@@ -53,13 +53,19 @@ html, body {
 }
 
 .div1 div {
-    min-height: 50px;
+    line-height: 2rem;
     text-align: center;
+    word-break: break-all;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     border: 1px solid rgba(0, 0, 0, 0.24);
+}
+
+.div1 h3 {
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.2);
 }
 
 .div2 {

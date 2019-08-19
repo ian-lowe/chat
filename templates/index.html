@@ -7,19 +7,26 @@
         var nickname = "{{ nickname }}"
         socket.on("connect", function () {
             document.querySelectorAll("button")[0].addEventListener("click", function() {
+                var channel_name = document.getElementById("new-channel").value;
+                const new_div = document.createElement("div");
+                new_div.innerText = channel_name;
+                document.querySelector(".div1").append(new_div);
+                document.getElementById("new-channel").value = "";
+            });
+
+            document.querySelectorAll("button")[1].addEventListener("click", function() {
                 let count = 1;
                 socket.emit("my event", nickname, count);
             });
 
-            document.querySelectorAll("button")[1].addEventListener("click", function () {
+            document.querySelectorAll("button")[2].addEventListener("click", function () {
                 let count = -1;
                 socket.emit("my event", nickname, count);
             });
 
-            document.querySelectorAll("button")[2].addEventListener("click", function () {
+            document.querySelectorAll("button")[3].addEventListener("click", function () {
                 socket.emit("join", "rm1");
             });
-
 
             socket.emit("user connected", nickname);
         });
@@ -39,14 +46,11 @@
 {% block body %}
     <div class="parent">
         <div class="div1">
-            <div>test</div>
-            <div>test</div>
-            <div>test</div>
-            <div>test</div>
-            
+            <h3>Channels</h3>
+            <div>General</div>
         </div>
         <div class="div2">
-            <input type="text" placeholder="Create Channel..">
+            <input type="text" placeholder="Create Channel.." id="new-channel">
             <button>+</button>
         </div>
         <div class="div3">
