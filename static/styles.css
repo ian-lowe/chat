@@ -1,20 +1,30 @@
+/* RESETS */
+
 * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
     font-family: Inconsolata;
-    font-size: 16px;
 }
 
-/* style resets for safari */
+/* RESETS FOR SAFARI */
+
 button, textarea, input {
     -webkit-appearance: none;
     border-radius: 0;
 }
 
+/* UNIVERSAL */
+
 html, body {
     height: 100%;
 }
+
+input:focus, textarea:focus {
+    outline: none;
+}
+
+/* INDEX.HTML CLASSES */
 
 .div1::-webkit-scrollbar {
     -webkit-appearance: none;
@@ -144,6 +154,56 @@ html, body {
     box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.3) inset !important;
 }
 
-input:focus, textarea:focus {
-    outline: none;
+/* LOGIN.HTML CLASSES */
+
+.login-body {
+    height: inherit;
+    width: inherit;
+    display: flex;
+    background: url("/static/flack.svg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.login-body form {
+    margin: auto;
+}
+
+.login-body input {
+    height: 30px;
+    width: 150px;
+    padding: 10px;
+    border: none;
+    vertical-align: middle;
+    font-size: 1.2rem;
+    box-shadow: none;
+    transition: box-shadow 0.4s;
+}
+
+.login-body input:hover {
+    box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.1) inset;
+    transition: box-shadow 0.4s;
+}
+
+.login-body input:focus {
+    /* !important retains box shadow on focus, regardless of mouse exit */
+    box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.15) inset !important;
+}
+
+.login-body button {
+    height: 30px;
+    width: 35px;
+    border: none;
+    vertical-align: middle;
+    box-shadow: none;
+    transition: box-shadow 0.4s;
+    vertical-align: middle;
+    background-color: #dddddd;
+    transition: background-color 0.4s;
+}
+
+.login-body button:hover {
+    background-color: #cecece;
+    transition: background-color 0.4s;
 }
