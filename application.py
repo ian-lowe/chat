@@ -36,6 +36,10 @@ def handle_message(nickname, count):
 def test_connect(nickname):
     emit("on connection", nickname, broadcast=True, include_self=False)
 
+@socketio.on("create channel")
+def create_channel(name):
+    emit("broadcast channel", name, broadcast=True)
+
 
 @socketio.on('join')
 def on_join(room):
