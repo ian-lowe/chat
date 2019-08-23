@@ -6,11 +6,6 @@
         var socket = io();
         var nickname = "{{ nickname }}"
 
-        
-        function capatalize_first(string) {
-            return string.charAt(0).toUpperCase() + string.slice(1);
-        }
-
         socket.on("connect", function () {
             document.querySelectorAll("button")[0].addEventListener("click", function() {
                 let channel_name = document.getElementById("new-channel").value;
@@ -18,7 +13,6 @@
                     return;
                 }
                 channel_name = channel_name.toLowerCase();
-                channel_name = capatalize_first(channel_name);
 
                 socket.emit("create channel", channel_name);
             });
@@ -42,7 +36,7 @@
 
         socket.on("broadcast channel", function(channel_name) {
             const new_div = document.createElement("div");
-            new_div.innerText = channel_name;
+            new_div.innerText = "#" + channel_name;
             new_div.setAttribute("tabindex", "0");
             document.querySelector(".div1").append(new_div);
             document.getElementById("new-channel").value = "";
@@ -64,7 +58,7 @@
     <div class="parent">
         <div class="div1">
             <h5>Channels</h5>
-            <div tabindex="0">General</div>
+            <div tabindex="0">#general</div>
         </div>
         <div class="div2">
             <input type="text" placeholder="Create Channel.." id="new-channel">
