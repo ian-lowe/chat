@@ -124,12 +124,13 @@ input:focus, textarea:focus {
     float: right;
     text-align: center;
     border: none;
-    background-color: #dddddd;
+    background-color: #cecece;
     transition: background-color 0.4s;
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.2) inset;
 }
 
 .div2 button:hover {
-    background-color: #cecece;
+    background-color: #dddddd;
     transition: background-color 0.4s;
 }
 
@@ -148,7 +149,7 @@ input:focus, textarea:focus {
 }
 
 .div4 input {
-    width: 100%;
+    width: 90%;
     height: 100%;
     font-size: 3vmax;
     padding: 0 15px 0 15px;
@@ -165,6 +166,29 @@ input:focus, textarea:focus {
 .div4 input:focus {
     /* !important retains box shadow on focus, regardless of mouse exit */
     box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.3) inset !important;
+}
+
+.div4 button {
+    width: 10%;
+    height: 100%;
+    font-size: 3vmax;
+    float: right;
+    text-align: center;
+    border: none;
+    background-color: #cecece;
+    color: pink;
+    transition: background-color 0.4s;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2) inset;
+}
+
+.div4 button:hover {
+    background-color: #dddddd;
+    transition: background-color 0.4s;
+}
+
+button img {
+    width: 20px;
+    height: 20px;
 }
 
 /* LOGIN.HTML CLASSES */
