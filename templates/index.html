@@ -14,16 +14,13 @@
         socket.on("connect", function () {
             document.querySelectorAll("button")[0].addEventListener("click", function() {
                 let channel_name = document.getElementById("new-channel").value;
+                if(channel_name == "") {
+                    return;
+                }
                 channel_name = channel_name.toLowerCase();
                 channel_name = capatalize_first(channel_name);
 
                 socket.emit("create channel", channel_name);
-
-                // const new_div = document.createElement("div");
-                // new_div.innerText = channel_name;
-                // new_div.setAttribute("tabindex", "0");
-                // document.querySelector(".div1").append(new_div);
-                // document.getElementById("new-channel").value = "";
             });
 
             document.querySelectorAll("button")[1].addEventListener("click", function() {
@@ -84,8 +81,8 @@
             <button>RM CHANGE</button>
         </div>
         <div class="div4">
-            <input type="text" placeholder="type your message here...">
             <button><img src="/static/send.svg" alt="send"></button>
+            <input type="text" placeholder="type your message here...">
         </div>
     </div>
 {% endblock %}
