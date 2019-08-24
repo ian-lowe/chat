@@ -13,7 +13,7 @@
                     return;
                 }
                 channel_name = channel_name.toLowerCase();
-
+                document.getElementById("new-channel").value = "";
                 socket.emit("create channel", channel_name);
             });
 
@@ -31,6 +31,19 @@
                 socket.emit("join", "rm1");
             });
 
+            // TODO:
+            // add event for channel selection...should change place holder text for chat input to '# <channel name>'
+            // let channels = document.querySelectorAll('.div1 div');
+            // for(channel of channels) {
+            //     channel.addEventListener("click", function() {
+            //         document.querySelector('.div4 input').setAttribute("placeholder", this.innerText);
+            //     });
+            // }
+
+            document.querySelector("#general").addEventListener("click", function() {
+                document.querySelector('.div4 input').setAttribute("placeholder", this.innerText);
+            });
+
             socket.emit("user connected", nickname);
         });
 
@@ -39,7 +52,6 @@
             new_div.innerText = "#" + channel_name;
             new_div.setAttribute("tabindex", "0");
             document.querySelector(".div1").append(new_div);
-            document.getElementById("new-channel").value = "";
         });
 
         socket.on("my response", function(nickname, counter) {
@@ -58,7 +70,7 @@
     <div class="parent">
         <div class="div1">
             <h5>Channels</h5>
-            <div tabindex="0">#general</div>
+            <div tabindex="0" id="general">#general</div>
         </div>
         <div class="div2">
             <input type="text" placeholder="Create Channel.." id="new-channel">
@@ -76,7 +88,7 @@
         </div>
         <div class="div4">
             <button><img src="/static/send.svg" alt="send"></button>
-            <input type="text" placeholder="type your message here...">
+            <input type="text" placeholder="#general">
         </div>
     </div>
 {% endblock %}
