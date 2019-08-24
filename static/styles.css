@@ -36,7 +36,7 @@ input:focus, textarea:focus {
 }
 
 .div1::-webkit-scrollbar-track {
-    background-color: rgba(57,57,57, .6);
+    background-color: rgba(255, 255, 255, 0.6);
     border-radius: 8px;
 }
 
@@ -105,19 +105,19 @@ input:focus, textarea:focus {
     font-size: 3vmax;
     padding: 0 15px 0 15px;
     border: none;
-    background-color: bisque;
+    background-color: rgb(255, 237, 215);
     box-shadow: none;
-    transition: box-shadow 0.4s;
+    transition: box-shadow 0.3s;
 }
 
 .div2 input:hover {
-    box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.15) inset;
-    transition: box-shadow 0.4s;
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1) inset;
+    transition: box-shadow 0.3s;
 }
 
 .div2 input:focus {
     /* !important retains box shadow on focus, regardless of mouse exit */
-    box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.1) inset !important;
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1) inset !important;
 }
 
 .div2 button {
@@ -127,13 +127,13 @@ input:focus, textarea:focus {
     float: right;
     text-align: center;
     border: none;
-    background-color: #cecece;
+    background-color: #dddddd;
     transition: background-color 0.4s;
     box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.2) inset;
 }
 
 .div2 button:hover {
-    background-color: #dddddd;
+    background-color: #eeeeee;
     transition: background-color 0.4s;
 }
 
@@ -157,7 +157,7 @@ input:focus, textarea:focus {
     font-size: 3vmax;
     padding: 0 15px 0 15px;
     border: none;
-    box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.3) inset;
+    box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.3) inset;
 }
 
 @media (max-width: 500px) {
