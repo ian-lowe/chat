@@ -85,13 +85,13 @@ input:focus, textarea:focus {
     font-size: .8rem;
 }
 
-.div1 div:hover {
-    background-color: rgba(0, 0, 0, 0.1);
+/* applies styling to all divs on hover excluding the selected channel */
+.div1 div:hover:not(.selected-channel) {
+    background-color: rgba(0, 0, 0, 0.03);
 }
 
-.div1 div:focus {
-    background-color: rgba(0, 0, 0, 0.2);
-    outline: none;
+.selected-channel {
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
 .div2 {
@@ -157,24 +157,13 @@ input:focus, textarea:focus {
     font-size: 3vmax;
     padding: 0 15px 0 15px;
     border: none;
-    box-shadow: none;
-    transition: box-shadow 0.4s;
+    box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.3) inset;
 }
 
 @media (max-width: 500px) {
     .div4 input {
         width: 80%;
     }
-}
-
-.div4 input:hover {
-    box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.2) inset;
-    transition: box-shadow 0.4s;
-}
-
-.div4 input:focus {
-    /* !important retains box shadow on focus, regardless of mouse exit */
-    box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.3) inset !important;
 }
 
 .div4 button {

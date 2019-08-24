@@ -7,6 +7,7 @@
         var nickname = "{{ nickname }}"
 
         socket.on("connect", function () {
+
             document.querySelectorAll("button")[0].addEventListener("click", function() {
                 let channel_name = document.getElementById("new-channel").value;
                 if(channel_name == "") {
@@ -31,17 +32,20 @@
                 socket.emit("join", "rm1");
             });
 
-            // TODO:
-            // add event for channel selection...should change place holder text for chat input to '# <channel name>'
-            // let channels = document.querySelectorAll('.div1 div');
-            // for(channel of channels) {
-            //     channel.addEventListener("click", function() {
-            //         document.querySelector('.div4 input').setAttribute("placeholder", this.innerText);
-            //     });
-            // }
+            document.querySelectorAll("button")[4].addEventListener("click", function () {
+                let message = document.querySelector(".div4 input");
+                message.value = "";
+                document.querySelector(".div4 input").focus();
+            });
 
             document.querySelector("#general").addEventListener("click", function() {
-                document.querySelector('.div4 input').setAttribute("placeholder", this.innerText);
+                document.querySelector(".div4 input").setAttribute("placeholder", "Message " + this.innerText);
+                let channels = document.querySelectorAll(".div1 div");
+                for(channel of channels) {
+                    channel.classList.remove("selected-channel");
+                }
+                this.classList.add("selected-channel");
+                document.querySelector(".div4 input").focus();
             });
 
             socket.emit("user connected", nickname);
@@ -50,8 +54,16 @@
         socket.on("broadcast channel", function(channel_name) {
             const new_div = document.createElement("div");
             new_div.innerText = "#" + channel_name;
-            new_div.setAttribute("tabindex", "0");
             document.querySelector(".div1").append(new_div);
+            new_div.addEventListener("click", function() {
+                document.querySelector(".div4 input").setAttribute("placeholder", "Message " + this.innerText);
+                let channels = document.querySelectorAll(".div1 div");
+                for (channel of channels) {
+                    channel.classList.remove("selected-channel");
+                }
+                this.classList.add("selected-channel");
+                document.querySelector(".div4 input").focus();
+            });
         });
 
         socket.on("my response", function(nickname, counter) {
@@ -70,7 +82,7 @@
     <div class="parent">
         <div class="div1">
             <h5>Channels</h5>
-            <div tabindex="0" id="general">#general</div>
+            <div class="selected-channel" id="general">#general</div>
         </div>
         <div class="div2">
             <input type="text" placeholder="Create Channel.." id="new-channel">
@@ -88,7 +100,7 @@
         </div>
         <div class="div4">
             <button><img src="/static/send.svg" alt="send"></button>
-            <input type="text" placeholder="#general">
+            <input type="text" placeholder="Message #general" autofocus>
         </div>
     </div>
 {% endblock %}
