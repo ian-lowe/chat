@@ -76,8 +76,20 @@
                 socket.emit("leave", current_room);
                 current_room = channel_name;
                 socket.emit("join", channel_name);
+                socket.emit("display messages", channel_name);
             });
         });
+
+        // socket.on("render room", function(room_messages) {
+        //     // let message_list = document.querySelector("#messages");
+        //     // while (message_list.hasChildNodes()) {
+        //     //     message_list.removeChild(message_list.lastChild);
+        //     // }
+        //     // for(msg of messages) {
+
+        //     // }
+        //     console.log(room_messages["message"]);
+        // });
 
         socket.on("broadcast msg", function(message, nickname, timestamp) {
             const li = document.createElement("li");
@@ -104,6 +116,9 @@
         </div>
         <div class="div3">
             <ul id="messages">
+                {% for message in messages %}
+                    <li>{{ message["timestamp"] }} {{ message["nickname"] }}: {{ message["message"] }}</li>
+                {% endfor %}
             </ul>
         </div>
         <div class="div4">

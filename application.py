@@ -1,5 +1,6 @@
 import os
 import time
+from collections import deque
 
 from flask import Flask, render_template, request, session
 from flask_session import Session
@@ -14,7 +15,9 @@ socketio = SocketIO(app)
 # app.config["SESSION_TYPE"] = "filesystem"
 # Session(app)
 
-rooms = ["#general"]
+rooms = {}
+# each room will have a deque of messages
+rooms["#general"] = deque()
 
 @app.route("/", methods=["GET", "POST"])
 def login():
@@ -23,12 +26,23 @@ def login():
     else:
         nickname = request.form.get("nickname")
         # session["user"] = nickname
-        return render_template("index.html", nickname=nickname, rooms=rooms)
+        return render_template("index.html", nickname=nickname, messages=rooms["#general"], rooms=rooms)
 
 @socketio.on("submit msg")
 def handle_message(message, nickname, current_room):
     # get timestamp for msg
     timestamp = time.strftime("%I:%M%p", time.localtime())
+    # create msg object to store msg, nick, and time
+    new_message = {
+        "message": message,
+        "nickname": nickname,
+        "timestamp": timestamp,
+    }
+    # store 10 most recent msg objects server side
+    if len(rooms[current_room]) >= 10:
+        rooms[current_room].popleft()
+    rooms[current_room].append(new_message)
+
     emit("broadcast msg", (message, nickname, timestamp), broadcast=True, room=current_room)
 
 @socketio.on("user connected")
@@ -38,13 +52,20 @@ def test_connect(nickname):
 # doesnt create channel on server side, but broadcasts a channel name to connected clients
 @socketio.on("create channel")
 def create_channel(name):
-    rooms.append(name)
+    rooms[name] = deque()
     emit("broadcast channel", name, broadcast=True)
 
 # joins an arbritary channel name. Doesn't have to be created before hand.
 @socketio.on('join')
 def on_join(room):
     join_room(room)
+
+@socketio.on("display messages")
+def get_messages(channel_name):
+    messages = rooms.get(channel_name)
+    for msg in messages:
+        print(msg)
+    # emit("render room", messages)
 
 @socketio.on('leave')
 def on_leave(room):
