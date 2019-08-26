@@ -1,2 +1,3 @@
 Flask
+Flask_session
 Flask-SocketIO

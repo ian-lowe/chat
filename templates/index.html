@@ -14,22 +14,52 @@
 
             // functionality for channel creation
             document.querySelectorAll("button")[0].addEventListener("click", function() {
-                let channel_name = "#" + document.getElementById("new-channel").value;
+                let channel_name = document.getElementById("new-channel").value;
                 if(channel_name == "") {
                     return;
                 }
+                channel_name = "#" + channel_name;
                 channel_name = channel_name.toLowerCase();
                 document.getElementById("new-channel").value = "";
                 socket.emit("create channel", channel_name);
+            });
+
+            document.querySelector(".div2 input").addEventListener("keyup", function() {
+                if(event.key === "Enter") {
+                    let channel_name = document.getElementById("new-channel").value;
+                    if (channel_name == "") {
+                        return;
+                    }
+                    channel_name = "#" + channel_name;
+                    channel_name = channel_name.toLowerCase();
+                    document.getElementById("new-channel").value = "";
+                    socket.emit("create channel", channel_name);
+                }
             });
 
             // functionality for sending a message
             document.querySelectorAll("button")[1].addEventListener("click", function () {
                 let message_input = document.querySelector(".div4 input");
                 let message = message_input.value;
+                if(message == "") {
+                    return;
+                }
                 message_input.value = "";
                 message_input.focus();
                 socket.emit("submit msg", message, nickname, current_room);
+            });
+
+            document.querySelector(".div4 input").addEventListener("keyup", function() {
+                if(event.key === "Enter") {
+                    let message_input = document.querySelector(".div4 input");
+                    let message = message_input.value;
+                    if (message == "") {
+                        return;
+                    }
+                    message_input.value = "";
+                    message_input.focus();
+                    socket.emit("submit msg", message, nickname, current_room);
+                }
             });
 
             // set up default channel to accept click event
