@@ -5,7 +5,6 @@
     <script>
         var socket = io();
         var nickname = "{{ nickname }}";
-        var room_list = [];
         var current_room = "";
 
         // set up chat room on initial visit
@@ -34,7 +33,6 @@
                         socket.emit("leave", current_room);
                         current_room = current_channels[i];
                         socket.emit("join", current_room);
-                        // socket.emit("display messages", channel_name);
                     });
                 }
                 document.querySelector(".div1 div:first-of-type").classList.add("selected-channel");
@@ -90,24 +88,6 @@
                 }
             });
 
-            // set up default channel to accept click event
-            // document.querySelector("#general").addEventListener("click", function() {
-            //     // set message placeholder to reflect current channel
-            //     document.querySelector(".div4 input").setAttribute("placeholder", "Message " + this.innerText);
-            //     // style channels to reflect selection
-            //     let channels = document.querySelectorAll(".div1 div");
-            //     for(channel of channels) {
-            //         channel.classList.remove("selected-channel");
-            //     }
-            //     this.classList.add("selected-channel");
-            //     // keep message box in focus regardless of channel switch
-            //     document.querySelector(".div4 input").focus();
-            //     // join room
-            //     socket.emit("leave", current_room);
-            //     current_room = "#general";
-            //     socket.emit("join", current_room);
-            // });
-
             // alert of new user
             socket.emit("user connected", nickname);
         });
@@ -134,20 +114,20 @@
                 socket.emit("leave", current_room);
                 current_room = channel_name;
                 socket.emit("join", channel_name);
-                socket.emit("display messages", channel_name);
             });
         });
 
-        // socket.on("render room", function(room_messages) {
-        //     // let message_list = document.querySelector("#messages");
-        //     // while (message_list.hasChildNodes()) {
-        //     //     message_list.removeChild(message_list.lastChild);
-        //     // }
-        //     // for(msg of messages) {
-
-        //     // }
-        //     console.log(room_messages["message"]);
-        // });
+        socket.on("render room", function(messages) {
+            let message_list = document.querySelector("#messages");
+            while(message_list.hasChildNodes()) {
+                message_list.removeChild(message_list.lastChild);
+            }
+            for(msg of messages) {
+                const li = document.createElement("li");
+                li.innerText = `${msg["timestamp"]} ${msg["nickname"]}: ${msg["message"]}`;
+                document.querySelector("#messages").append(li);
+            }
+        });
 
         socket.on("broadcast msg", function(message, nickname, timestamp) {
             const li = document.createElement("li");
@@ -155,9 +135,12 @@
             document.querySelector("#messages").append(li);
         });
 
-        // socket.on("on connection", function(nickname) {
-        //     document.querySelectorAll("li")[2].innerText = nickname + " has connected.";
-        // });
+        socket.on("on connection", function(nickname) {
+            const li = document.createElement("li");
+            li.innerText = `${nickname} has connected`;
+            li.style.color = "lightgreen";
+            document.querySelector("#messages").append(li);
+        });
 
 
     </script>

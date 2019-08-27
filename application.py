@@ -55,23 +55,16 @@ def handle_message(message, nickname, current_room):
 def test_connect(nickname):
     emit("on connection", nickname, broadcast=True, include_self=False)
 
-# doesnt create channel on server side, but broadcasts a channel name to connected clients
 @socketio.on("create channel")
 def create_channel(name):
     rooms[name] = deque()
     emit("broadcast channel", name, broadcast=True)
 
-# joins an arbritary channel name. Doesn't have to be created before hand.
 @socketio.on('join')
 def on_join(room):
     join_room(room)
-
-@socketio.on("display messages")
-def get_messages(channel_name):
-    messages = rooms.get(channel_name)
-    for msg in messages:
-        print(msg)
-    # emit("render room", messages)
+    messages = list(rooms.get(room))
+    emit("render room", messages)
 
 @socketio.on('leave')
 def on_leave(room):
