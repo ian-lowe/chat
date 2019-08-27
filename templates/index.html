@@ -15,7 +15,7 @@
 
             socket.emit("get channels");
             socket.on("receive channels", function(current_channels) {
-                for(let i = 1; i < current_channels.length; i++) {
+                for(let i = 0; i < current_channels.length; i++) {
                     let new_div = document.createElement("div");
                     new_div.innerText = current_channels[i];
                     document.querySelector(".div1").append(new_div);
@@ -32,11 +32,12 @@
                         document.querySelector(".div4 input").focus();
                         // join room
                         socket.emit("leave", current_room);
-                        current_room = channel_name;
-                        socket.emit("join", channel_name);
-                        socket.emit("display messages", channel_name);
+                        current_room = current_channels[i];
+                        socket.emit("join", current_room);
+                        // socket.emit("display messages", channel_name);
                     });
                 }
+                document.querySelector(".div1 div:first-of-type").classList.add("selected-channel");
             });
 
             // functionality for channel creation
@@ -165,7 +166,6 @@
     <div class="parent">
         <div class="div1">
             <h5>Channels</h5>
-            <div class="selected-channel" id="general">#general</div>
         </div>
         <div class="div2">
             <input type="text" placeholder="Create Channel.." id="new-channel">
