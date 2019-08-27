@@ -1,5 +1,6 @@
 import os
 import time
+import json
 from collections import deque
 
 from flask import Flask, render_template, request, session
@@ -26,7 +27,12 @@ def login():
     else:
         nickname = request.form.get("nickname")
         # session["user"] = nickname
-        return render_template("index.html", nickname=nickname, messages=rooms["#general"], rooms=rooms)
+        return render_template("index.html", nickname=nickname, rooms=rooms)
+
+@socketio.on("get channels")
+def get_channels():
+    current_channels = list(rooms)
+    emit("receive channels", current_channels)
 
 @socketio.on("submit msg")
 def handle_message(message, nickname, current_room):

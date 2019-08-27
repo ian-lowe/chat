@@ -5,12 +5,39 @@
     <script>
         var socket = io();
         var nickname = "{{ nickname }}";
+        var room_list = [];
         var current_room = "";
 
         // set up chat room on initial visit
         socket.on("connect", function () {
             current_room = "#general";
             socket.emit("join", current_room);
+
+            socket.emit("get channels");
+            socket.on("receive channels", function(current_channels) {
+                for(let i = 1; i < current_channels.length; i++) {
+                    let new_div = document.createElement("div");
+                    new_div.innerText = current_channels[i];
+                    document.querySelector(".div1").append(new_div);
+                    new_div.addEventListener("click", function () {
+                        // set message placeholder to reflect current channel
+                        document.querySelector(".div4 input").setAttribute("placeholder", "Message " + this.innerText);
+                        // style channels to reflect selection
+                        let channels = document.querySelectorAll(".div1 div");
+                        for (channel of channels) {
+                            channel.classList.remove("selected-channel");
+                        }
+                        this.classList.add("selected-channel");
+                        // keep message box in focus regardless of channel switch
+                        document.querySelector(".div4 input").focus();
+                        // join room
+                        socket.emit("leave", current_room);
+                        current_room = channel_name;
+                        socket.emit("join", channel_name);
+                        socket.emit("display messages", channel_name);
+                    });
+                }
+            });
 
             // functionality for channel creation
             document.querySelectorAll("button")[0].addEventListener("click", function() {
@@ -63,22 +90,22 @@
             });
 
             // set up default channel to accept click event
-            document.querySelector("#general").addEventListener("click", function() {
-                // set message placeholder to reflect current channel
-                document.querySelector(".div4 input").setAttribute("placeholder", "Message " + this.innerText);
-                // style channels to reflect selection
-                let channels = document.querySelectorAll(".div1 div");
-                for(channel of channels) {
-                    channel.classList.remove("selected-channel");
-                }
-                this.classList.add("selected-channel");
-                // keep message box in focus regardless of channel switch
-                document.querySelector(".div4 input").focus();
-                // join room
-                socket.emit("leave", current_room);
-                current_room = "#general";
-                socket.emit("join", current_room);
-            });
+            // document.querySelector("#general").addEventListener("click", function() {
+            //     // set message placeholder to reflect current channel
+            //     document.querySelector(".div4 input").setAttribute("placeholder", "Message " + this.innerText);
+            //     // style channels to reflect selection
+            //     let channels = document.querySelectorAll(".div1 div");
+            //     for(channel of channels) {
+            //         channel.classList.remove("selected-channel");
+            //     }
+            //     this.classList.add("selected-channel");
+            //     // keep message box in focus regardless of channel switch
+            //     document.querySelector(".div4 input").focus();
+            //     // join room
+            //     socket.emit("leave", current_room);
+            //     current_room = "#general";
+            //     socket.emit("join", current_room);
+            // });
 
             // alert of new user
             socket.emit("user connected", nickname);
@@ -87,7 +114,7 @@
         // set up any newly created channel to accept click event
         socket.on("broadcast channel", function(channel_name) {
             // create div for channel
-            const new_div = document.createElement("div");
+            let new_div = document.createElement("div");
             new_div.innerText = channel_name;
             document.querySelector(".div1").append(new_div);
             // set up newly created channel to accept click event
@@ -146,9 +173,6 @@
         </div>
         <div class="div3">
             <ul id="messages">
-                {% for message in messages %}
-                    <li>{{ message["timestamp"] }} {{ message["nickname"] }}: {{ message["message"] }}</li>
-                {% endfor %}
             </ul>
         </div>
         <div class="div4">
