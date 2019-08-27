@@ -3,8 +3,9 @@
 {% block body %}
     <div class="login-body">
         <form method="POST">
-            <input type="text" name="nickname" placeholder="Choose a nickname..">
+            <input type="text" name="nickname" placeholder="Choose a nickname.." >
             <button>Enter</button>
         </form>
     </div>
+    <script>document.querySelector("input").focus();</script>
 {% endblock %}
