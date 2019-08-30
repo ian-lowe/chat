@@ -44,8 +44,8 @@ def handle_message(message, nickname, current_room):
         "nickname": nickname,
         "timestamp": timestamp,
     }
-    # store 10 most recent msg objects server side
-    if len(rooms[current_room]) >= 10:
+    # store 100 most recent msg objects server side
+    if len(rooms[current_room]) >= 100:
         rooms[current_room].popleft()
     rooms[current_room].append(new_message)
 

@@ -127,12 +127,16 @@
                 li.innerText = `${msg["timestamp"]} ${msg["nickname"]}: ${msg["message"]}`;
                 document.querySelector("#messages").append(li);
             }
+            let messageBody = document.querySelector('.div3');
+            messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
         });
 
         socket.on("broadcast msg", function(message, nickname, timestamp) {
             const li = document.createElement("li");
             li.innerText = `${timestamp} ${nickname}: ${message}`;
             document.querySelector("#messages").append(li);
+            let messageBody = document.querySelector('.div3');
+            messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
         });
 
         socket.on("on connection", function(nickname) {
@@ -140,6 +144,8 @@
             li.innerText = `${nickname} has connected`;
             li.style.color = "lightgreen";
             document.querySelector("#messages").append(li);
+            let messageBody = document.querySelector('.div3');
+            messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
         });
 
 
