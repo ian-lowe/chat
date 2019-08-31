@@ -9,6 +9,7 @@
 
         // set up chat room on initial visit
         socket.on("connect", function () {
+
             current_room = "#general";
             socket.emit("join", current_room);
 
@@ -132,11 +133,14 @@
         });
 
         socket.on("broadcast msg", function(message, nickname, timestamp) {
+            var messageBody = document.querySelector('.div3');
             const li = document.createElement("li");
             li.innerText = `${timestamp} ${nickname}: ${message}`;
             document.querySelector("#messages").append(li);
-            let messageBody = document.querySelector('.div3');
-            messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+            var messageBody = document.querySelector('.div3');
+            if((messageBody.scrollTop + li.offsetHeight) >= (messageBody.scrollHeight - messageBody.clientHeight)) {
+                messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+            }
         });
 
         socket.on("on connection", function(nickname) {
