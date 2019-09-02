@@ -28,6 +28,10 @@ input:focus, textarea:focus {
     color: rgba(0, 0, 0, 0.3);
 }
 
+ul {
+    list-style: none;
+}
+
 /* INDEX.HTML CLASSES */
 
 .div1::-webkit-scrollbar {
@@ -147,6 +151,25 @@ input:focus, textarea:focus {
     padding: 25px;
     box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.4) inset;
     overflow: auto;
+}
+
+.name-time {
+    color: darkgray;
+    padding-top: 15px;
+    padding-bottom: 3px;
+}
+
+.name-time span {
+    color: white;
+    font-size: 1.5rem;
+}
+
+.text {
+    color: rgba(255, 255, 255, 0.9);
+    /* margin-top: 2px;
+    margin-bottom: 10px; */
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 .div4 {

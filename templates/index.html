@@ -124,9 +124,15 @@
                 message_list.removeChild(message_list.lastChild);
             }
             for(msg of messages) {
-                const li = document.createElement("li");
-                li.innerText = `${msg["timestamp"]} ${msg["nickname"]}: ${msg["message"]}`;
-                document.querySelector("#messages").append(li);
+                const name_time = document.createElement("li");
+                const text = document.createElement("li");
+                name_time.innerHTML = `<span>${msg["nickname"]}</span> ${msg["timestamp"]}:`;
+                text.innerText = `${msg["message"]}`;
+                name_time.classList.add("name-time");
+                text.classList.add("text");
+
+                document.querySelector("#messages").append(name_time);
+                document.querySelector("#messages").append(text);
             }
             let messageBody = document.querySelector('.div3');
             messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
@@ -134,11 +140,19 @@
 
         socket.on("broadcast msg", function(message, nickname, timestamp) {
             var messageBody = document.querySelector('.div3');
-            const li = document.createElement("li");
-            li.innerText = `${timestamp} ${nickname}: ${message}`;
-            document.querySelector("#messages").append(li);
+            const name_time = document.createElement("li");
+            const text = document.createElement("li");
+            name_time.innerHTML = `<span>${nickname}</span> ${timestamp}:`;
+            text.innerText = `${message}`;
+            name_time.classList.add("name-time");
+            text.classList.add("text");
+
+            document.querySelector("#messages").append(name_time);
+            document.querySelector("#messages").append(text);
             var messageBody = document.querySelector('.div3');
-            if((messageBody.scrollTop + li.offsetHeight) >= (messageBody.scrollHeight - messageBody.clientHeight)) {
+            // keep chat scrolled to the bottom unless the user is scrolled up to view previous messages
+            let message_height = messageBody.scrollTop + text.offsetHeight + name_time.offsetHeight;
+            if(message_height >= (messageBody.scrollHeight - messageBody.clientHeight)) {
                 messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
             }
         });
@@ -146,7 +160,7 @@
         socket.on("on connection", function(nickname) {
             const li = document.createElement("li");
             li.innerText = `${nickname} has connected`;
-            li.style.color = "lightgreen";
+            li.classList.add("on-connection");
             document.querySelector("#messages").append(li);
             let messageBody = document.querySelector('.div3');
             messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
