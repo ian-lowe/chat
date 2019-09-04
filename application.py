@@ -1,3 +1,6 @@
+import eventlet
+# eventlet.monkey_patch()
+
 import os
 import time
 import json
@@ -7,9 +10,10 @@ from flask import Flask, render_template, request, session
 from flask_session import Session
 from flask_socketio import SocketIO, emit, join_room, leave_room
 
+
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
-socketio = SocketIO(app)
+socketio = SocketIO(app, async_mode="eventlet")
 
 # # Configure session to use filesystem
 # app.config["SESSION_PERMANENT"] = False
@@ -52,8 +56,14 @@ def handle_message(message, nickname, current_room):
     emit("broadcast msg", (message, nickname, timestamp), broadcast=True, room=current_room)
 
 @socketio.on("user connected")
-def test_connect(nickname):
+def connect(nickname):
     emit("on connection", nickname, broadcast=True, include_self=False)
+
+@socketio.on('disconnect')
+def test_disconnect():
+    print('Client disconnected', flush=True)
+    emit("disconnected", broadcast=True)
+
 
 @socketio.on("create channel")
 def create_channel(name):
@@ -69,3 +79,6 @@ def on_join(room):
 @socketio.on('leave')
 def on_leave(room):
     leave_room(room)
+
+if __name__ == '__main__':
+    socketio.run(app)

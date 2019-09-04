@@ -51,6 +51,7 @@
                 channel_name = channel_name.toLowerCase();
                 document.getElementById("new-channel").value = "";
                 socket.emit("create channel", channel_name);
+                // socket.disconnect();
             });
 
             document.querySelector(".div2 input").addEventListener("keyup", function() {
@@ -170,6 +171,18 @@
             messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
         });
 
+        socket.on("disconnect", function(nickname) {
+            socket.emit("disconnect", nickname);
+        });
+
+        socket.on("disconnected", function(nickname) {
+            const li = document.createElement("li");
+            li.innerText = `${nickname} has disconnected`;
+            li.classList.add("disconnection");
+            document.querySelector("#messages").append(li);
+            let messageBody = document.querySelector('.div3');
+            messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+        });
 
     </script>
 {% endblock %}
