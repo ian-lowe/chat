@@ -21,6 +21,7 @@ socketio = SocketIO(app, async_mode="eventlet")
 # Session(app)
 
 rooms = {}
+users = {}
 # each room will have a deque of messages
 rooms["#general"] = deque()
 
@@ -57,13 +58,14 @@ def handle_message(message, nickname, current_room):
 
 @socketio.on("user connected")
 def connect(nickname):
+    users[request.sid] = nickname
     emit("on connection", nickname, broadcast=True, include_self=False)
 
 @socketio.on('disconnect')
 def test_disconnect():
-    print('Client disconnected', flush=True)
-    emit("disconnected", broadcast=True)
-
+    nickname = users.get(request.sid)
+    users.pop(request.sid)
+    emit("disconnected", nickname, broadcast=True)
 
 @socketio.on("create channel")
 def create_channel(name):

@@ -93,6 +93,8 @@
             });
 
             // alert of new user
+            // let id = socket.io.engine.id
+            // console.log(id);
             socket.emit("user connected", nickname);
         });
 
@@ -171,9 +173,9 @@
             messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
         });
 
-        socket.on("disconnect", function(nickname) {
-            socket.emit("disconnect", nickname);
-        });
+        // socket.on("disconnect", function(nickname) {
+        //     socket.emit("disconnect", nickname);
+        // });
 
         socket.on("disconnected", function(nickname) {
             const li = document.createElement("li");
