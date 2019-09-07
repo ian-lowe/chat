@@ -160,7 +160,7 @@ ul {
     grid-column: 5 / -1;
     background-color: gray;
     color: white;
-    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
     padding: 25px;
     box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.4) inset;
     overflow: auto;
@@ -185,14 +185,14 @@ ul {
 }
 
 .connection {
-    color: rgb(123, 255, 47);
+    color: rgb(164, 253, 113);
     padding-top: 15px;
     padding-bottom: 15px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 .disconnection {
-    color: rgb(255, 0, 0);
+    color: rgb(255, 118, 118);
     padding-top: 15px;
     padding-bottom: 15px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
