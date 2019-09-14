@@ -6,7 +6,7 @@ import time
 import json
 from collections import deque
 
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, flash, redirect, url_for
 from flask_session import Session
 from flask_socketio import SocketIO, emit, join_room, leave_room
 
@@ -31,7 +31,6 @@ users = {}
 # last_room dict will pair users with their last visited room
 last_room = {}
 
-
 @app.route("/", methods=["GET", "POST"])
 def login():
     if request.method == "GET":
@@ -43,6 +42,9 @@ def login():
             return render_template("index.html", nickname=nickname, has_session=True, current_room=current_room)
     else:
         nickname = request.form.get("nickname")
+        if nickname in users.values():
+            flash("username taken, please choose another.")
+            return redirect(url_for('login'))
         current_room = "#general"
         # session["room"] = current_room
         session["user"] = nickname
@@ -95,6 +97,8 @@ def create_channel(name):
     if test_name == "":
         return
     test_name = test_name.replace(" ", "-")
+    if ("#" + test_name) in rooms:
+        return
     rooms["#" + test_name] = deque()
     emit("broadcast channel", "#" + test_name, broadcast=True)
 

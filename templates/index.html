@@ -80,7 +80,7 @@
                     return;
                 }
                 message_input.value = "";
-                message_input.focus();
+                // message_input.focus();
                 socket.emit("submit msg", message, nickname, current_room);
             });
 
@@ -92,7 +92,7 @@
                         return;
                     }
                     message_input.value = "";
-                    message_input.focus();
+                    // message_input.focus();
                     socket.emit("submit msg", message, nickname, current_room);
                 }
             });
