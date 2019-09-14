@@ -5,13 +5,13 @@
     <script>
         var socket = io();
         var nickname = "{{ nickname }}";
-        var current_room = "";
+        var current_room = "{{ current_room }}";
+        var has_session = "{{ has_session }}";
 
         // set up chat room on initial visit
         socket.on("connect", function () {
-
-            current_room = "#general";
-            socket.emit("join", current_room);
+            socket.emit("join", current_room, nickname);
+            document.querySelector(".div4 input").setAttribute("placeholder", "Message " + current_room);
 
             socket.emit("get channels");
             socket.on("receive channels", function(current_channels) {
@@ -34,11 +34,16 @@
                             // join room
                             socket.emit("leave", current_room);
                             current_room = current_channels[i];
-                            socket.emit("join", current_room);
+                            socket.emit("join", current_room, nickname);
                         }
                     });
                 }
-                document.querySelector(".div1 div:first-of-type").classList.add("selected-channel");
+                let channels = document.querySelectorAll('.div1 div');
+                for(channel of channels) {
+                    if(channel.innerText == current_room) {
+                        channel.classList.add("selected-channel");
+                    }
+                }
             });
 
             // functionality for channel creation
@@ -47,7 +52,7 @@
                 if(channel_name == "") {
                     return;
                 }
-                channel_name = "#" + channel_name;
+                channel_name = channel_name;
                 channel_name = channel_name.toLowerCase();
                 document.getElementById("new-channel").value = "";
                 socket.emit("create channel", channel_name);
@@ -60,7 +65,7 @@
                     if (channel_name == "") {
                         return;
                     }
-                    channel_name = "#" + channel_name;
+                    channel_name = channel_name;
                     channel_name = channel_name.toLowerCase();
                     document.getElementById("new-channel").value = "";
                     socket.emit("create channel", channel_name);
@@ -95,7 +100,9 @@
             // alert of new user
             // let id = socket.io.engine.id
             // console.log(id);
-            socket.emit("user connected", nickname);
+            if (has_session === "True") {
+                socket.emit("user connected", nickname);
+            }
         });
 
         // set up any newly created channel to accept click event
@@ -120,7 +127,7 @@
                     // join room
                     socket.emit("leave", current_room);
                     current_room = channel_name;
-                    socket.emit("join", channel_name);
+                    socket.emit("join", current_room, nickname);
                 }
             });
         });
