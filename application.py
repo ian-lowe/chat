@@ -38,8 +38,11 @@ def login():
             return render_template("login.html")
         else:
             nickname = session.get("user")
+            # if user opens a second tab/window, direct them to the login page
+            if nickname in users.values():
+                return render_template("login.html")
             current_room = last_room.get(nickname) or "#general"
-            return render_template("index.html", nickname=nickname, has_session=True, current_room=current_room)
+            return render_template("index.html", nickname=nickname, second_visit=True, current_room=current_room)
     else:
         nickname = request.form.get("nickname")
         if nickname in users.values():
@@ -48,7 +51,7 @@ def login():
         current_room = "#general"
         # session["room"] = current_room
         session["user"] = nickname
-        return render_template("index.html", nickname=nickname, current_room=current_room)
+        return render_template("index.html", nickname=nickname, second_visit=False, current_room=current_room)
 
 @socketio.on("get channels")
 def get_channels():

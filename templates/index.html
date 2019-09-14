@@ -6,7 +6,7 @@
         var socket = io();
         var nickname = "{{ nickname }}";
         var current_room = "{{ current_room }}";
-        var has_session = "{{ has_session }}";
+        var second_visit = "{{ second_visit }}";
 
         // set up chat room on initial visit
         socket.on("connect", function () {
@@ -80,7 +80,7 @@
                     return;
                 }
                 message_input.value = "";
-                // message_input.focus();
+                message_input.focus();
                 socket.emit("submit msg", message, nickname, current_room);
             });
 
@@ -92,7 +92,6 @@
                         return;
                     }
                     message_input.value = "";
-                    // message_input.focus();
                     socket.emit("submit msg", message, nickname, current_room);
                 }
             });
@@ -100,9 +99,10 @@
             // alert of new user
             // let id = socket.io.engine.id
             // console.log(id);
-            if (has_session === "True") {
-                socket.emit("user connected", nickname);
-            }
+            // if (second_visit === "True") {
+            //     socket.emit("user connected", nickname);
+            // }
+            socket.emit("user connected", nickname);
         });
 
         // set up any newly created channel to accept click event
