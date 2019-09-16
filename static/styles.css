@@ -158,6 +158,10 @@ ul {
     transition: background-color 0.4s;
 }
 
+.div2 button:active {
+    transform: translateY(1px);
+}
+
 .div3 {
     padding: 5px;
     grid-row: 3 / -3;
