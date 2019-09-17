@@ -83,7 +83,9 @@
                     return;
                 }
                 message_input.value = "";
-                message_input.focus();
+                if(window.innerWidth > 499) {
+                    message_input.focus();
+                }
                 socket.emit("submit msg", message, nickname, current_room);
             });
 
