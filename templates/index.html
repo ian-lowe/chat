@@ -29,8 +29,11 @@
                                 channel.classList.remove("selected-channel");
                             }
                             this.classList.add("selected-channel");
-                            // keep message box in focus regardless of channel switch
-                            document.querySelector(".div4 input").focus();
+                            // on larger browsers, keep message box in focus regardless of channel switch
+                            // needed because on phones, focusing of the input brings up the keyboard
+                            if (window.innerWidth > 499) {
+                                document.querySelector(".div4 input").focus();
+                            }
                             // join room
                             socket.emit("leave", current_room);
                             current_room = current_channels[i];
@@ -122,8 +125,11 @@
                         channel.classList.remove("selected-channel");
                     }
                     this.classList.add("selected-channel");
-                    // keep message box in focus regardless of channel switch
-                    document.querySelector(".div4 input").focus();
+                    // on larger browsers, keep message box in focus regardless of channel switch
+                    // needed because on phones, focusing of the input brings up the keyboard
+                    if (window.innerWidth > 499) {
+                        document.querySelector(".div4 input").focus();
+                    }
                     // join room
                     socket.emit("leave", current_room);
                     current_room = channel_name;
