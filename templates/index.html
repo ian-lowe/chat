@@ -1,5 +1,6 @@
 {% extends "template.html" %}
-{% block title %}Index{% endblock %}
+{% block title %}Flack {{ current_room }}{% endblock %}
+    <meta name="description" content="You have joined the Flack chat room">
 {% block js %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
     <script>
@@ -21,6 +22,8 @@
                     document.querySelector(".div1").append(new_div);
                     new_div.addEventListener("click", function () {
                         if(new_div.innerText !== current_room) {
+                            // update page title to reflect new channel
+                            document.title = "Flack " + this.innerText;
                             // set message placeholder to reflect current channel
                             document.querySelector(".div4 input").setAttribute("placeholder", "Message " + this.innerText);
                             // style channels to reflect selection
@@ -119,6 +122,8 @@
             // set up newly created channel to accept click event
             new_div.addEventListener("click", function() {
                 if(new_div.innerText !== current_room) {
+                    // update page title to reflect new channel
+                    document.title = "Flack " + this.innerText;
                     // set message placeholder to reflect current channel
                     document.querySelector(".div4 input").setAttribute("placeholder", "Message " + this.innerText);
                     // style channels to reflect selection
