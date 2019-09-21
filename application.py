@@ -2,9 +2,9 @@ import eventlet
 # eventlet.monkey_patch()
 
 import os
-import time
 import json
 from collections import deque
+import datetime
 
 from flask import Flask, render_template, request, session, flash, redirect, url_for
 from flask_session import Session
@@ -64,8 +64,8 @@ def handle_message(message, nickname, current_room):
     if test_msg == "":
         return
     # get timestamp for msg
-    timestamp = time.strftime("%I:%M%p", time.localtime())
-    # create msg object to store msg, nick, and time
+    # + "Z" is to ensure UTC time in ISO format
+    timestamp = str(datetime.datetime.utcnow().isoformat()) + "Z"
     new_message = {
         "message": message,
         "nickname": nickname,
