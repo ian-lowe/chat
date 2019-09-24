@@ -1,13 +1,12 @@
 {% extends "template.html" %}
 {% block title %}Flack {{ current_room }}{% endblock %}
-    <meta name="description" content="You have joined the Flack chat room">
+    <meta name="description" content="a chatroom application featuring real time communication via websockets">
 {% block js %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
     <script>
         var socket = io();
         var nickname = "{{ nickname }}";
         var current_room = "{{ current_room }}";
-        var second_visit = "{{ second_visit }}";
 
         // set up chat room on initial visit
         socket.on("connect", function () {
@@ -104,12 +103,6 @@
                 }
             });
 
-            // alert of new user
-            // let id = socket.io.engine.id
-            // console.log(id);
-            // if (second_visit === "True") {
-            //     socket.emit("user connected", nickname);
-            // }
             socket.emit("user connected", nickname);
         });
 
@@ -196,10 +189,6 @@
             let messageBody = document.querySelector('.div3');
             messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
         });
-
-        // socket.on("disconnect", function(nickname) {
-        //     socket.emit("disconnect", nickname);
-        // });
 
         socket.on("disconnected", function(nickname) {
             const li = document.createElement("li");
