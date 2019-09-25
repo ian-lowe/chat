@@ -44,9 +44,12 @@ def login():
             current_room = last_room.get(nickname) or "#general"
             return render_template("index.html", nickname=nickname, second_visit=True, current_room=current_room)
     else:
-        nickname = request.form.get("nickname")
+        nickname = request.form.get("nickname").strip()
         if nickname in users.values():
             flash("username taken, please choose another.")
+            return redirect(url_for('login'))
+        if nickname == "":
+            flash("please choose a valid username")
             return redirect(url_for('login'))
         current_room = "#general"
         # session["room"] = current_room
