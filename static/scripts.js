@@ -1,14 +1,20 @@
 var socket = io();
-// var nickname = "{{ nickname }}";
-// var current_room = "{{ current_room }}";
+
+// nickname and current_room taken from index.html
 
 // set up chat room on initial visit
 socket.on("connect", function () {
+    //reload page if navigated to page through history
+    if(performance.navigation.type == 2){
+        location.reload();
+    }
+
     socket.emit("join", current_room, nickname);
     document.querySelector(".div4 input").setAttribute("placeholder", "Message " + current_room);
 
     socket.emit("get channels");
     socket.on("receive channels", function (current_channels) {
+        console.log(typeof(current_channels));
         for (let i = 0; i < current_channels.length; i++) {
             let new_div = document.createElement("div");
             new_div.innerText = current_channels[i];
@@ -37,6 +43,7 @@ socket.on("connect", function () {
                 }
             });
         }
+
         let channels = document.querySelectorAll('.div1 div');
         for (channel of channels) {
             if (channel.innerText == current_room) {
@@ -55,7 +62,6 @@ socket.on("connect", function () {
         channel_name = channel_name.toLowerCase();
         document.getElementById("new-channel").value = "";
         socket.emit("create channel", channel_name);
-        // socket.disconnect();
     });
 
     document.querySelector(".div2 input").addEventListener("keyup", function () {

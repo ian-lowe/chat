@@ -1,5 +1,4 @@
 import eventlet
-# eventlet.monkey_patch()
 
 import os
 import json
@@ -31,6 +30,7 @@ users = {}
 # last_room dict will pair users with their last visited room
 last_room = {}
 
+
 @app.route("/", methods=["GET", "POST"])
 def login():
     if request.method == "GET":
@@ -42,24 +42,36 @@ def login():
             if nickname in users.values():
                 return render_template("login.html")
             current_room = last_room.get(nickname) or "#general"
-            return render_template("index.html", nickname=nickname, second_visit=True, current_room=current_room)
+            return render_template(
+                "index.html",
+                nickname=nickname,
+                second_visit=True,
+                current_room=current_room,
+            )
     else:
         nickname = request.form.get("nickname").strip()
         if nickname in users.values():
             flash("username taken, please choose another.")
-            return redirect(url_for('login'))
+            return redirect(url_for("login"))
         if nickname == "":
             flash("please choose a valid username")
-            return redirect(url_for('login'))
+            return redirect(url_for("login"))
         current_room = "#general"
         # session["room"] = current_room
         session["user"] = nickname
-        return render_template("index.html", nickname=nickname, second_visit=False, current_room=current_room)
+        return render_template(
+            "index.html",
+            nickname=nickname,
+            second_visit=False,
+            current_room=current_room,
+        )
+
 
 @socketio.on("get channels")
 def get_channels():
     current_channels = list(rooms)
     emit("receive channels", current_channels)
+
 
 @socketio.on("submit msg")
 def handle_message(message, nickname, current_room):
@@ -69,17 +81,19 @@ def handle_message(message, nickname, current_room):
     # get timestamp for msg
     # + "Z" is to ensure UTC time in ISO format
     timestamp = str(datetime.datetime.utcnow().isoformat()) + "Z"
-    new_message = {
-        "message": message,
-        "nickname": nickname,
-        "timestamp": timestamp,
-    }
+    new_message = {"message": message, "nickname": nickname, "timestamp": timestamp}
     # store 100 most recent msg objects server side
     if len(rooms[current_room]) >= 100:
         rooms[current_room].popleft()
     rooms[current_room].append(new_message)
 
-    emit("broadcast msg", (message, nickname, timestamp), broadcast=True, room=current_room)
+    emit(
+        "broadcast msg",
+        (message, nickname, timestamp),
+        broadcast=True,
+        room=current_room,
+    )
+
 
 @socketio.on("user connected")
 def connect(nickname):
@@ -90,12 +104,14 @@ def connect(nickname):
         users[request.sid] = nickname
         emit("on connection", nickname, broadcast=True, include_self=False)
 
-@socketio.on('disconnect')
+
+@socketio.on("disconnect")
 def test_disconnect():
     if users.get(request.sid) is not None:
         nickname = users.get(request.sid)
         users.pop(request.sid)
         emit("disconnected", nickname, broadcast=True)
+
 
 @socketio.on("create channel")
 def create_channel(name):
@@ -108,7 +124,8 @@ def create_channel(name):
     rooms["#" + test_name] = deque()
     emit("broadcast channel", "#" + test_name, broadcast=True)
 
-@socketio.on('join')
+
+@socketio.on("join")
 def on_join(room, nickname):
     try:
         join_room(room)
@@ -118,9 +135,12 @@ def on_join(room, nickname):
     except:
         print("user needs browser reset")
 
-@socketio.on('leave')
+
+@socketio.on("leave")
 def on_leave(room):
     leave_room(room)
 
-if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0')
+
+if __name__ == "__main__":
+    socketio.run(app, host="0.0.0.0")
+
