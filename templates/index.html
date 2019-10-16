@@ -1,6 +1,6 @@
 {% extends "template.html" %}
 {% block title %}Flack {{ current_room }}{% endblock %}
-    <meta name="description" content="a chatroom application featuring real time communication via websockets">
+    <meta name="description" content="Flack - a real time chat app">
 {% block js %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
     <script>
@@ -19,6 +19,7 @@
             <h5>channels</h5>
         </div>
         <div class="div2">
+            <label for="new-channel" class="hide">Create Channel</label>
             <input type="text" placeholder="Create Channel.." id="new-channel">
             <button>+</button>
         </div>
@@ -28,7 +29,8 @@
         </div>
         <div class="div4">
             <button>></button>
-            <input type="text" placeholder="Message #general" autofocus>
+            <label for="msgbox" class="hide">Enter Message</label>
+            <input type="text" placeholder="Message #general" id="msgbox" autofocus>
         </div>
     </div>
 {% endblock %}

@@ -306,3 +306,10 @@ button img {
     background-color: #cecece;
     transition: background-color 0.4s;
 }
+
+/* general class to hide stuff :) */
+.hide {
+   position: absolute !important;
+   top: -9999px !important;
+   left: -9999px !important;
+}
