@@ -1,5 +1,7 @@
 # Flack - a single page web application built for real time communication
 
+Live link: https://chat-flack.herokuapp.com
+
 ## About
 
 Flack is an online messaging service, similar in spirit to Slack. Users are able to sign into the site with a display name, create channels (i.e. chatrooms) to communicate in, as well as see and join existing channels. Once a channel is selected, users are able to send and receive messages with one another in real time.
@@ -24,7 +26,7 @@ Flack is an online messaging service, similar in spirit to Slack. Users are able
 **`/templates/`** - folder containing HTML files
 * template.html - template for web app pages
 * login.html - landing page where user can choose a nickname
-* index.html - page that contains the application
+* index.html - primary html file
 
 **`/static/`** - folder containing stylesheets, scripts, and images
 * styles.css - main stylesheet
