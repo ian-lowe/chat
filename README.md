@@ -8,7 +8,9 @@ Flack is an online messaging service, similar in spirit to Slack. Users are able
 
 #### Challenges and accomplishments:
 * planning, implementing, and testing of a full stack application from a list of business specifications
-* building a single page user interface with pure html/css/vanilla javascript
+* displaying proper timezone information based on the ISO standard
+* storing messages and channels server side and performantly displaying them
+* responsive styling utilizing CSS Grid
 * gained comfort with the Socket.IO library, both in Python and JavaScript
 * utilized AJAX and websockets for full duplex communication
 * deployment to Heroku
