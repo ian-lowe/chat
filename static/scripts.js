@@ -1,6 +1,7 @@
 const socket = io();
 
 const msgInput = document.querySelector(".div4 input");
+const channelInput = document.getElementById("new-channel");
 const leftSideBar = document.querySelector(".div1");
 const channels = document.querySelectorAll(".div1 div");
 
@@ -55,25 +56,25 @@ socket.on("connect", function () {
 
     // functionality for channel creation
     document.querySelectorAll("button")[0].addEventListener("click", function () {
-        let channel_name = document.getElementById("new-channel").value;
+        let channel_name = channelInput.value;
         if (channel_name == "") {
             return;
         }
         channel_name = channel_name;
         channel_name = channel_name.toLowerCase();
-        document.getElementById("new-channel").value = "";
+        channelInput.value = "";
         socket.emit("create channel", channel_name);
     });
 
     document.querySelector(".div2 input").addEventListener("keyup", function () {
         if (event.key === "Enter") {
-            let channel_name = document.getElementById("new-channel").value;
+            let channel_name = channelInput.value;
             if (channel_name == "") {
                 return;
             }
             channel_name = channel_name;
             channel_name = channel_name.toLowerCase();
-            document.getElementById("new-channel").value = "";
+            channelInput.value = "";
             socket.emit("create channel", channel_name);
         }
     });
