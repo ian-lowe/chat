@@ -4,6 +4,7 @@ const msgInput = document.querySelector(".div4 input");
 const channelInput = document.getElementById("new-channel");
 const leftSideBar = document.querySelector(".div1");
 const channels = document.querySelectorAll(".div1 div");
+const messageList = document.querySelector("#messages");
 
 // nickname and current_room taken from index.html
 
@@ -111,7 +112,7 @@ socket.on("broadcast channel", function (channel_name) {
     // create div for channel
     let new_div = document.createElement("div");
     new_div.innerText = channel_name;
-    document.querySelector(".div1").append(new_div);
+    leftSideBar.append(new_div);
     // set up newly created channel to accept click event
     new_div.addEventListener("click", function () {
         if (new_div.innerText !== current_room) {
@@ -138,9 +139,8 @@ socket.on("broadcast channel", function (channel_name) {
 });
 
 socket.on("render room", function (messages) {
-    let message_list = document.querySelector("#messages");
-    while (message_list.hasChildNodes()) {
-        message_list.removeChild(message_list.lastChild);
+    while (messageList.hasChildNodes()) {
+        messageList.removeChild(messageList.lastChild);
     }
     for (msg of messages) {
         const name_time = document.createElement("li");
@@ -152,8 +152,8 @@ socket.on("render room", function (messages) {
         name_time.classList.add("name-time");
         text.classList.add("text");
 
-        document.querySelector("#messages").append(name_time);
-        document.querySelector("#messages").append(text);
+        messageList.append(name_time);
+        messageList.append(text);
     }
     let messageBody = document.querySelector('.div3');
     messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
@@ -170,8 +170,8 @@ socket.on("broadcast msg", function (message, nickname, timestamp) {
     name_time.classList.add("name-time");
     text.classList.add("text");
 
-    document.querySelector("#messages").append(name_time);
-    document.querySelector("#messages").append(text);
+    document.messageList.append(name_time);
+    document.messageList.append(text);
     var messageBody = document.querySelector('.div3');
     // keep chat scrolled to the bottom unless the user is scrolled up to view previous messages
     let message_height = messageBody.scrollTop + text.offsetHeight + name_time.offsetHeight;
@@ -184,7 +184,7 @@ socket.on("on connection", function (nickname) {
     const li = document.createElement("li");
     li.innerText = `${nickname} has connected`;
     li.classList.add("connection");
-    document.querySelector("#messages").append(li);
+    document.messageList.append(li);
     let messageBody = document.querySelector('.div3');
     messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
 });
@@ -193,7 +193,7 @@ socket.on("disconnected", function (nickname) {
     const li = document.createElement("li");
     li.innerText = `${nickname} has disconnected`;
     li.classList.add("disconnection");
-    document.querySelector("#messages").append(li);
+    document.messageList.append(li);
     let messageBody = document.querySelector('.div3');
     messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
 });
