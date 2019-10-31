@@ -1,4 +1,4 @@
-# Flack - a single page web application built for real time communication
+# Flack - a web application built for real time communication
 
 Live link: https://chat-flack.herokuapp.com
 
