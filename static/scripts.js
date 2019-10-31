@@ -22,7 +22,7 @@ socket.on("connect", function () {
     socket.emit("get channels");
     socket.on("receive channels", function (current_channels) {
         for (let i = 0; i < current_channels.length; i++) {
-            let new_div = document.createElement("div");
+            const new_div = document.createElement("div");
             new_div.innerText = current_channels[i];
             leftSideBar.append(new_div);
             new_div.addEventListener("click", function () {
@@ -62,7 +62,6 @@ socket.on("connect", function () {
         if (channel_name == "") {
             return;
         }
-        channel_name = channel_name;
         channel_name = channel_name.toLowerCase();
         channelInput.value = "";
         socket.emit("create channel", channel_name);
@@ -74,7 +73,6 @@ socket.on("connect", function () {
             if (channel_name == "") {
                 return;
             }
-            channel_name = channel_name;
             channel_name = channel_name.toLowerCase();
             channelInput.value = "";
             socket.emit("create channel", channel_name);
@@ -111,7 +109,7 @@ socket.on("connect", function () {
 // set up any newly created channel to accept click event
 socket.on("broadcast channel", function (channel_name) {
     // create div for channel
-    let new_div = document.createElement("div");
+    const new_div = document.createElement("div");
     new_div.innerText = channel_name;
     leftSideBar.append(new_div);
     // set up newly created channel to accept click event
@@ -146,8 +144,8 @@ socket.on("render room", function (messages) {
     for (msg of messages) {
         const name_time = document.createElement("li");
         const text = document.createElement("li");
-        var local_time = new Date(msg["timestamp"]);
-        local_time_parsed = local_time.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+        const local_time = new Date(msg["timestamp"]);
+        const local_time_parsed = local_time.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
         name_time.innerHTML = `<span>${msg["nickname"]}</span> ${local_time_parsed}:`;
         text.innerText = `${msg["message"]}`;
         name_time.classList.add("name-time");
@@ -160,8 +158,8 @@ socket.on("render room", function (messages) {
 });
 
 socket.on("broadcast msg", function (message, nickname, timestamp) {
-    var local_time = new Date(timestamp);
-    local_time_parsed = local_time.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+    const local_time = new Date(timestamp);
+    const local_time_parsed = local_time.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
     const name_time = document.createElement("li");
     const text = document.createElement("li");
     name_time.innerHTML = `<span>${nickname}</span> ${local_time_parsed}:`;
@@ -172,7 +170,7 @@ socket.on("broadcast msg", function (message, nickname, timestamp) {
     document.messageList.append(name_time);
     document.messageList.append(text);
     // keep chat scrolled to the bottom unless the user is scrolled up to view previous messages
-    let message_height = chatBody.scrollTop + text.offsetHeight + name_time.offsetHeight;
+    const message_height = chatBody.scrollTop + text.offsetHeight + name_time.offsetHeight;
     if (message_height >= (chatchatBody.scrollHeight -chatBody.clientHeight)) {
        chatBody.scrollTop = chatBody.scrollHeight -chatBody.clientHeight;
     }
