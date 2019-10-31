@@ -1,6 +1,8 @@
-var socket = io();
+const socket = io();
 
 const msgInput = document.querySelector(".div4 input");
+const leftSideBar = document.querySelector(".div1");
+const channels = document.querySelectorAll(".div1 div");
 
 // nickname and current_room taken from index.html
 
@@ -19,7 +21,7 @@ socket.on("connect", function () {
         for (let i = 0; i < current_channels.length; i++) {
             let new_div = document.createElement("div");
             new_div.innerText = current_channels[i];
-            document.querySelector(".div1").append(new_div);
+            leftSideBar.append(new_div);
             new_div.addEventListener("click", function () {
                 if (new_div.innerText !== current_room) {
                     // update page title to reflect new channel
@@ -27,7 +29,6 @@ socket.on("connect", function () {
                     // set message placeholder to reflect current channel
                     msgInput.setAttribute("placeholder", "Message " + this.innerText);
                     // style channels to reflect selection
-                    let channels = document.querySelectorAll(".div1 div");
                     for (channel of channels) {
                         channel.classList.remove("selected-channel");
                     }
@@ -45,7 +46,6 @@ socket.on("connect", function () {
             });
         }
 
-        let channels = document.querySelectorAll('.div1 div');
         for (channel of channels) {
             if (channel.innerText == current_room) {
                 channel.classList.add("selected-channel");
@@ -119,7 +119,6 @@ socket.on("broadcast channel", function (channel_name) {
             // set message placeholder to reflect current channel
             msgInput.setAttribute("placeholder", "Message " + this.innerText);
             // style channels to reflect selection
-            let channels = document.querySelectorAll(".div1 div");
             for (channel of channels) {
                 channel.classList.remove("selected-channel");
             }
