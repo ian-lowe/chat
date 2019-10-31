@@ -1,5 +1,7 @@
 var socket = io();
 
+const msgInput = document.querySelector(".div4 input");
+
 // nickname and current_room taken from index.html
 
 // set up chat room on initial visit
@@ -10,11 +12,10 @@ socket.on("connect", function () {
     }
 
     socket.emit("join", current_room, nickname);
-    document.querySelector(".div4 input").setAttribute("placeholder", "Message " + current_room);
+    msgInput.setAttribute("placeholder", "Message " + current_room);
 
     socket.emit("get channels");
     socket.on("receive channels", function (current_channels) {
-        console.log(typeof(current_channels));
         for (let i = 0; i < current_channels.length; i++) {
             let new_div = document.createElement("div");
             new_div.innerText = current_channels[i];
@@ -24,7 +25,7 @@ socket.on("connect", function () {
                     // update page title to reflect new channel
                     document.title = "Flack " + this.innerText;
                     // set message placeholder to reflect current channel
-                    document.querySelector(".div4 input").setAttribute("placeholder", "Message " + this.innerText);
+                    msgInput.setAttribute("placeholder", "Message " + this.innerText);
                     // style channels to reflect selection
                     let channels = document.querySelectorAll(".div1 div");
                     for (channel of channels) {
@@ -34,7 +35,7 @@ socket.on("connect", function () {
                     // on larger browsers, keep message box in focus regardless of channel switch
                     // needed because on phones, focusing of the input brings up the keyboard
                     if (window.innerWidth > 499) {
-                        document.querySelector(".div4 input").focus();
+                        msgInput.focus();
                     }
                     // join room
                     socket.emit("leave", current_room);
@@ -79,26 +80,24 @@ socket.on("connect", function () {
 
     // functionality for sending a message
     document.querySelectorAll("button")[1].addEventListener("click", function () {
-        let message_input = document.querySelector(".div4 input");
-        let message = message_input.value;
+        let message = msgInput.value;
         if (message == "") {
             return;
         }
-        message_input.value = "";
+        msgInput.value = "";
         if (window.innerWidth > 499) {
-            message_input.focus();
+            msgInput.focus();
         }
         socket.emit("submit msg", message, nickname, current_room);
     });
 
-    document.querySelector(".div4 input").addEventListener("keyup", function () {
-        if (event.key === "Enter") {
-            let message_input = document.querySelector(".div4 input");
-            let message = message_input.value;
+    msgInput.addEventListener("keyup", function () {
+        if (event.key === "Enter") {;
+            let message = msgInput.value;
             if (message == "") {
                 return;
             }
-            message_input.value = "";
+            msgInput.value = "";
             socket.emit("submit msg", message, nickname, current_room);
         }
     });
@@ -118,7 +117,7 @@ socket.on("broadcast channel", function (channel_name) {
             // update page title to reflect new channel
             document.title = "Flack " + this.innerText;
             // set message placeholder to reflect current channel
-            document.querySelector(".div4 input").setAttribute("placeholder", "Message " + this.innerText);
+            msgInput.setAttribute("placeholder", "Message " + this.innerText);
             // style channels to reflect selection
             let channels = document.querySelectorAll(".div1 div");
             for (channel of channels) {
@@ -128,7 +127,7 @@ socket.on("broadcast channel", function (channel_name) {
             // on larger browsers, keep message box in focus regardless of channel switch
             // needed because on phones, focusing of the input brings up the keyboard
             if (window.innerWidth > 499) {
-                document.querySelector(".div4 input").focus();
+                msgInput.focus();
             }
             // join room
             socket.emit("leave", current_room);
