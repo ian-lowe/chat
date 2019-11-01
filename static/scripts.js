@@ -57,7 +57,7 @@ socket.on("connect", function () {
     });
 
     // functionality for channel creation
-    document.querySelector("#channel-button").addEventListener("click", function () {
+    document.querySelectorAll("#channel-button").addEventListener("click", function () {
         let channel_name = channelInput.value;
         if (channel_name == "") {
             return;
@@ -80,7 +80,7 @@ socket.on("connect", function () {
     });
 
     // functionality for sending a message
-    document.getElementById("msg-button").addEventListener("click", function () {
+    document.querySelectorAll("button")[1].addEventListener("click", function () {
         let message = msgInput.value;
         if (message == "") {
             return;
