@@ -59,7 +59,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
         });
 
         // functionality for channel creation
-        document.querySelectorAll("#channel-button").addEventListener("click", function () {
+        document.querySelector("#channel-button").addEventListener("click", function () {
             let channel_name = channelInput.value;
             if (channel_name == "") {
                 return;
@@ -82,7 +82,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
         });
 
         // functionality for sending a message
-        document.querySelectorAll("button")[1].addEventListener("click", function () {
+        document.querySelector("msg-button").addEventListener("click", function () {
             let message = msgInput.value;
             if (message == "") {
                 return;
