@@ -5,7 +5,6 @@ const channelInput = document.getElementById("new-channel");
 const leftSideBar = document.querySelector(".div1");
 const channels = document.querySelectorAll(".div1 div");
 const messageList = document.querySelector("#messages");
-const chatBody = document.querySelector('.div3');
 
 // nickname and current_room taken from index.html
 
@@ -62,17 +61,19 @@ socket.on("connect", function () {
         if (channel_name == "") {
             return;
         }
+        channel_name = channel_name;
         channel_name = channel_name.toLowerCase();
         channelInput.value = "";
         socket.emit("create channel", channel_name);
     });
 
-    channelInput.addEventListener("keyup", function () {
+    document.querySelector(".div2 input").addEventListener("keyup", function () {
         if (event.key === "Enter") {
             let channel_name = channelInput.value;
             if (channel_name == "") {
                 return;
             }
+            channel_name = channel_name;
             channel_name = channel_name.toLowerCase();
             channelInput.value = "";
             socket.emit("create channel", channel_name);
@@ -154,12 +155,14 @@ socket.on("render room", function (messages) {
         messageList.append(name_time);
         messageList.append(text);
     }
-    chatBody.scrollTop = chatBody.scrollHeight - chatBody.clientHeight;
+    let messageBody = document.querySelector('.div3');
+    messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
 });
 
 socket.on("broadcast msg", function (message, nickname, timestamp) {
     var local_time = new Date(timestamp);
     local_time_parsed = local_time.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+    var messageBody = document.querySelector('.div3');
     const name_time = document.createElement("li");
     const text = document.createElement("li");
     name_time.innerHTML = `<span>${nickname}</span> ${local_time_parsed}:`;
@@ -169,10 +172,11 @@ socket.on("broadcast msg", function (message, nickname, timestamp) {
 
     document.messageList.append(name_time);
     document.messageList.append(text);
+    var messageBody = document.querySelector('.div3');
     // keep chat scrolled to the bottom unless the user is scrolled up to view previous messages
-    let message_height = chatBody.scrollTop + text.offsetHeight + name_time.offsetHeight;
-    if (message_height >= (chatchatBody.scrollHeight -chatBody.clientHeight)) {
-       chatBody.scrollTop = chatBody.scrollHeight -chatBody.clientHeight;
+    let message_height = messageBody.scrollTop + text.offsetHeight + name_time.offsetHeight;
+    if (message_height >= (messageBody.scrollHeight - messageBody.clientHeight)) {
+        messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
     }
 });
 
@@ -181,7 +185,8 @@ socket.on("on connection", function (nickname) {
     li.innerText = `${nickname} has connected`;
     li.classList.add("connection");
     document.messageList.append(li);
-    chatBody.scrollTop = chatBody.scrollHeight - chatBody.clientHeight;
+    let messageBody = document.querySelector('.div3');
+    messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
 });
 
 socket.on("disconnected", function (nickname) {
@@ -189,5 +194,6 @@ socket.on("disconnected", function (nickname) {
     li.innerText = `${nickname} has disconnected`;
     li.classList.add("disconnection");
     document.messageList.append(li);
-    chatBody.scrollTop = chatBody.scrollHeight - chatBody.clientHeight;
+    let messageBody = document.querySelector('.div3');
+    messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
 });
