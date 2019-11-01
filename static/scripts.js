@@ -57,12 +57,11 @@ socket.on("connect", function () {
     });
 
     // functionality for channel creation
-    document.querySelector("#channel-button").addEventListener("click", function () {
+    document.querySelectorAll("button")[0].addEventListener("click", function () {
         let channel_name = channelInput.value;
         if (channel_name == "") {
             return;
         }
-        channel_name = channel_name;
         channel_name = channel_name.toLowerCase();
         channelInput.value = "";
         socket.emit("create channel", channel_name);
@@ -74,7 +73,6 @@ socket.on("connect", function () {
             if (channel_name == "") {
                 return;
             }
-            channel_name = channel_name;
             channel_name = channel_name.toLowerCase();
             channelInput.value = "";
             socket.emit("create channel", channel_name);
@@ -82,7 +80,7 @@ socket.on("connect", function () {
     });
 
     // functionality for sending a message
-    document.querySelector("#msg-button").addEventListener("click", function () {
+    document.querySelectorAll("button")[1].addEventListener("click", function () {
         let message = msgInput.value;
         if (message == "") {
             return;
