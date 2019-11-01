@@ -80,8 +80,7 @@ socket.on("connect", function () {
     });
 
     // functionality for sending a message
-    document.querySelector("#msg-button").addEventListener("click", function () {
-        console.log(document.querySelector("#msg-button"));
+    document.getElementById("msg-button").addEventListener("click", function () {
         let message = msgInput.value;
         if (message == "") {
             return;
