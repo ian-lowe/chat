@@ -82,7 +82,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
         });
 
         // functionality for sending a message
-        document.querySelector("msg-button").addEventListener("click", function () {
+        document.querySelector("#msg-button").addEventListener("click", function () {
             let message = msgInput.value;
             if (message == "") {
                 return;
