@@ -1,6 +1,15 @@
 {% extends "template.html" %}
 {% block title %}Flack {{ current_room }}{% endblock %}
     <meta name="description" content="Flack - a real time chat app">
+    {% block js %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+    <script>
+        var nickname = "{{ nickname }}";
+        var current_room = "{{ current_room }}";
+        var second_vist = "{{ second_visit }}"
+    </script>
+    <script src="/static/scripts.js"></script>
+{% endblock %}
 {% block body %}
     <div class="parent">
         <div class="logo-div">
@@ -24,13 +33,4 @@
             <input type="text" placeholder="Message #general" id="msgbox" autofocus>
         </div>
     </div>
-{% endblock %}
-{% block js %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
-    <script>
-        var nickname = "{{ nickname }}";
-        var current_room = "{{ current_room }}";
-        var second_vist = "{{ second_visit }}"
-    </script>
-    <script src="/static/scripts.js"></script>
 {% endblock %}
