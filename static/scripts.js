@@ -14,7 +14,6 @@ socket.on("connect", function () {
 
     socket.emit("get channels");
     socket.on("receive channels", function (current_channels) {
-        console.log(typeof(current_channels));
         for (let i = 0; i < current_channels.length; i++) {
             let new_div = document.createElement("div");
             new_div.innerText = current_channels[i];
