@@ -1,6 +1,7 @@
 var socket = io();
 
 const left_sidebar = document.querySelector(".div1");
+const channel_div = document.querySelectorAll(".div1 div");
 
 // nickname and current_room taken from index.html
 
@@ -27,8 +28,7 @@ socket.on("connect", function () {
                     // set message placeholder to reflect current channel
                     document.querySelector(".div4 input").setAttribute("placeholder", "Message " + this.innerText);
                     // style channels to reflect selection
-                    let channels = document.querySelectorAll(".div1 div");
-                    for (channel of channels) {
+                    for (channel of channel_div) {
                         channel.classList.remove("selected-channel");
                     }
                     this.classList.add("selected-channel");
@@ -45,8 +45,7 @@ socket.on("connect", function () {
             });
         }
 
-        let channels = document.querySelectorAll('.div1 div');
-        for (channel of channels) {
+        for (channel of channel_div) {
             if (channel.innerText == current_room) {
                 channel.classList.add("selected-channel");
             }
@@ -121,8 +120,7 @@ socket.on("broadcast channel", function (channel_name) {
             // set message placeholder to reflect current channel
             document.querySelector(".div4 input").setAttribute("placeholder", "Message " + this.innerText);
             // style channels to reflect selection
-            let channels = document.querySelectorAll(".div1 div");
-            for (channel of channels) {
+            for (channel of channel_div) {
                 channel.classList.remove("selected-channel");
             }
             this.classList.add("selected-channel");
