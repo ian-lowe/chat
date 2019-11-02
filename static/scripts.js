@@ -17,7 +17,6 @@ socket.on("connect", function () {
 
     socket.emit("get channels");
     socket.on("receive channels", function (current_channels) {
-        const displayed_channels = document.querySelectorAll(".div1 div");
         for (let i = 0; i < current_channels.length; i++) {
             let new_div = document.createElement("div");
             new_div.innerText = current_channels[i];
@@ -29,7 +28,8 @@ socket.on("connect", function () {
                     // set message placeholder to reflect current channel
                     msg_input.setAttribute("placeholder", "Message " + this.innerText);
                     // style channels to reflect selection
-                    for (channel of displayed_channels) {
+                    let channels = document.querySelectorAll(".div1 div");
+                    for (channel of channels) {
                         channel.classList.remove("selected-channel");
                     }
                     this.classList.add("selected-channel");
@@ -46,7 +46,8 @@ socket.on("connect", function () {
             });
         }
 
-        for (channel of displayed_channels) {
+        let channels = document.querySelectorAll('.div1 div');
+        for (channel of channels) {
             if (channel.innerText == current_room) {
                 channel.classList.add("selected-channel");
             }
