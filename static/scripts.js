@@ -1,5 +1,7 @@
 var socket = io();
 
+const left_sidebar = document.querySelector(".div1");
+
 // nickname and current_room taken from index.html
 
 // set up chat room on initial visit
@@ -17,7 +19,7 @@ socket.on("connect", function () {
         for (let i = 0; i < current_channels.length; i++) {
             let new_div = document.createElement("div");
             new_div.innerText = current_channels[i];
-            document.querySelector(".div1").append(new_div);
+            left_sidebar.append(new_div);
             new_div.addEventListener("click", function () {
                 if (new_div.innerText !== current_room) {
                     // update page title to reflect new channel
@@ -110,7 +112,7 @@ socket.on("broadcast channel", function (channel_name) {
     // create div for channel
     let new_div = document.createElement("div");
     new_div.innerText = channel_name;
-    document.querySelector(".div1").append(new_div);
+    left_sidebar.append(new_div);
     // set up newly created channel to accept click event
     new_div.addEventListener("click", function () {
         if (new_div.innerText !== current_room) {
