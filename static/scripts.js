@@ -1,7 +1,6 @@
 var socket = io();
 
 const left_sidebar = document.querySelector(".div1");
-const channel_div = document.querySelectorAll(".div1 div");
 
 // nickname and current_room taken from index.html
 
@@ -20,32 +19,14 @@ socket.on("connect", function () {
         for (let i = 0; i < current_channels.length; i++) {
             let new_div = document.createElement("div");
             new_div.innerText = current_channels[i];
-            left_sidebar.append(new_div);
-            new_div.addEventListener("click", function () {
-                if (new_div.innerText !== current_room) {
-                    // update page title to reflect new channel
-                    document.title = "Flack " + this.innerText;
-                    // set message placeholder to reflect current channel
-                    document.querySelector(".div4 input").setAttribute("placeholder", "Message " + this.innerText);
-                    // style channels to reflect selection
-                    for (channel of channel_div) {
-                        channel.classList.remove("selected-channel");
-                    }
-                    this.classList.add("selected-channel");
-                    // on larger browsers, keep message box in focus regardless of channel switch
-                    // needed because on phones, focusing of the input brings up the keyboard
-                    if (window.innerWidth > 499) {
-                        document.querySelector(".div4 input").focus();
-                    }
-                    // join room
-                    socket.emit("leave", current_room);
-                    current_room = current_channels[i];
-                    socket.emit("join", current_room, nickname);
-                }
+            new_div.addEventListener("click", function() {
+                initChannel(new_div, current_channels[i]);
             });
+            left_sidebar.append(new_div);
         }
 
-        for (channel of channel_div) {
+        let channels = document.querySelectorAll('.div1 div');
+        for (channel of channels) {
             if (channel.innerText == current_room) {
                 channel.classList.add("selected-channel");
             }
@@ -114,26 +95,7 @@ socket.on("broadcast channel", function (channel_name) {
     left_sidebar.append(new_div);
     // set up newly created channel to accept click event
     new_div.addEventListener("click", function () {
-        if (new_div.innerText !== current_room) {
-            // update page title to reflect new channel
-            document.title = "Flack " + this.innerText;
-            // set message placeholder to reflect current channel
-            document.querySelector(".div4 input").setAttribute("placeholder", "Message " + this.innerText);
-            // style channels to reflect selection
-            for (channel of channel_div) {
-                channel.classList.remove("selected-channel");
-            }
-            this.classList.add("selected-channel");
-            // on larger browsers, keep message box in focus regardless of channel switch
-            // needed because on phones, focusing of the input brings up the keyboard
-            if (window.innerWidth > 499) {
-                document.querySelector(".div4 input").focus();
-            }
-            // join room
-            socket.emit("leave", current_room);
-            current_room = channel_name;
-            socket.emit("join", current_room, nickname);
-        }
+        initChannel(new_div, channel_name);
     });
 });
 
@@ -197,3 +159,27 @@ socket.on("disconnected", function (nickname) {
     let messageBody = document.querySelector('.div3');
     messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
 });
+
+const initChannel = function(self, channel_name) {
+    if (self.innerText !== current_room) {
+        // update page title to reflect new channel
+        document.title = "Flack " + self.innerText;
+        // set message placeholder to reflect current channel
+        document.querySelector(".div4 input").setAttribute("placeholder", "Message " + self.innerText);
+        // style channels to reflect selection
+        let channels = document.querySelectorAll(".div1 div");
+        for (channel of channels) {
+            channel.classList.remove("selected-channel");
+        }
+        self.classList.add("selected-channel");
+        // on larger browsers, keep message box in focus regardless of channel switch
+        // needed because on phones, focusing of the input brings up the keyboard
+        if (window.innerWidth > 499) {
+            document.querySelector(".div4 input").focus();
+        }
+        // join room
+        socket.emit("leave", current_room);
+        current_room = channel_name;
+        socket.emit("join", current_room, nickname);
+    }
+}
