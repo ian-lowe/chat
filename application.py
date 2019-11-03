@@ -45,7 +45,6 @@ def login():
             return render_template(
                 "index.html",
                 nickname=nickname,
-                second_visit=True,
                 current_room=current_room,
             )
     else:
@@ -57,12 +56,10 @@ def login():
             flash("please choose a valid username")
             return redirect(url_for("login"))
         current_room = "#general"
-        # session["room"] = current_room
         session["user"] = nickname
         return render_template(
             "index.html",
             nickname=nickname,
-            second_visit=False,
             current_room=current_room,
         )
 

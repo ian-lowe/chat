@@ -1,8 +1,8 @@
 var socket = io();
 
-const left_sidebar = document.querySelector(".div1");
+const leftSidebar = document.querySelector(".div1");
 
-// nickname and current_room taken from index.html
+// nickname and currentRoom taken from index.html
 
 // set up chat room on initial visit
 socket.on("connect", function () {
@@ -11,8 +11,8 @@ socket.on("connect", function () {
         location.reload();
     }
 
-    socket.emit("join", current_room, nickname);
-    document.querySelector(".div4 input").setAttribute("placeholder", "Message " + current_room);
+    socket.emit("join", currentRoom, nickname);
+    document.querySelector(".div4 input").setAttribute("placeholder", "Message " + currentRoom);
 
     socket.emit("get channels");
     socket.on("receive channels", function (current_channels) {
@@ -22,12 +22,12 @@ socket.on("connect", function () {
             new_div.addEventListener("click", function() {
                 initChannel(new_div, current_channels[i]);
             });
-            left_sidebar.append(new_div);
+            leftSidebar.append(new_div);
         }
 
         let channels = document.querySelectorAll('.div1 div');
         for (channel of channels) {
-            if (channel.innerText == current_room) {
+            if (channel.innerText == currentRoom) {
                 channel.classList.add("selected-channel");
             }
         }
@@ -69,7 +69,7 @@ socket.on("connect", function () {
         if (window.innerWidth > 499) {
             message_input.focus();
         }
-        socket.emit("submit msg", message, nickname, current_room);
+        socket.emit("submit msg", message, nickname, currentRoom);
     });
 
     document.querySelector(".div4 input").addEventListener("keyup", function () {
@@ -80,7 +80,7 @@ socket.on("connect", function () {
                 return;
             }
             message_input.value = "";
-            socket.emit("submit msg", message, nickname, current_room);
+            socket.emit("submit msg", message, nickname, currentRoom);
         }
     });
 
@@ -92,7 +92,7 @@ socket.on("broadcast channel", function (channel_name) {
     // create div for channel
     let new_div = document.createElement("div");
     new_div.innerText = channel_name;
-    left_sidebar.append(new_div);
+    leftSidebar.append(new_div);
     // set up newly created channel to accept click event
     new_div.addEventListener("click", function () {
         initChannel(new_div, channel_name);
@@ -161,7 +161,7 @@ socket.on("disconnected", function (nickname) {
 });
 
 const initChannel = function(self, channel_name) {
-    if (self.innerText !== current_room) {
+    if (self.innerText !== currentRoom) {
         // update page title to reflect new channel
         document.title = "Flack " + self.innerText;
         // set message placeholder to reflect current channel
@@ -178,8 +178,8 @@ const initChannel = function(self, channel_name) {
             document.querySelector(".div4 input").focus();
         }
         // join room
-        socket.emit("leave", current_room);
-        current_room = channel_name;
-        socket.emit("join", current_room, nickname);
+        socket.emit("leave", currentRoom);
+        currentRoom = channel_name;
+        socket.emit("join", currentRoom, nickname);
     }
 }
