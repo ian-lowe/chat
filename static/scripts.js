@@ -1,4 +1,4 @@
-var socket = io();
+const socket = io();
 
 const leftSidebar = document.querySelector("#left-side-bar");
 const channelBox = document.querySelector("#channel-box");
@@ -11,7 +11,7 @@ const chatMessages = document.querySelector("#chat-messages");
 // set up chat room on initial visit
 socket.on("connect", function () {
     //reload page if navigated to page through history
-    if(performance.navigation.type == 2){
+    if(performance.navigation.type == 2) {
         location.reload();
     }
 
@@ -21,7 +21,7 @@ socket.on("connect", function () {
     socket.emit("get channels");
     socket.on("receive channels", function (currentChannels) {
         for (let i = 0; i < currentChannels.length; i++) {
-            let newDiv = document.createElement("div");
+            const newDiv = document.createElement("div");
             newDiv.innerText = currentChannels[i];
             newDiv.addEventListener("click", function() {
                 initChannel(newDiv, currentChannels[i]);
@@ -29,7 +29,7 @@ socket.on("connect", function () {
             leftSidebar.append(newDiv);
         }
 
-        let channels = document.querySelectorAll('.div1 div');
+        const channels = document.querySelectorAll('.div1 div');
         for (channel of channels) {
             if (channel.innerText == currentRoom) {
                 channel.classList.add("selected-channel");
@@ -37,50 +37,27 @@ socket.on("connect", function () {
         }
     });
 
-    // functionality for channel creation
-    document.getElementById("channel-btn").addEventListener("click", function () {
-        let channelName = channelBox.value;
-        if (channelName == "") {
-            return;
-        }
-        channelName = channelName.toLowerCase();
-        channelBox.value = "";
-        socket.emit("create channel", channelName);
+    document.querySelector("#channel-btn").addEventListener("click", function () {
+        sumbitChannel();
     });
 
-    document.querySelector(".div2 input").addEventListener("keyup", function () {
+    channelBox.addEventListener("keyup", function () {
         if (event.key === "Enter") {
-            let channelName = channelBox.value;
-            if (channelName == "") {
-                return;
-            }
-            channelName = channelName.toLowerCase();
-            channelBox.value = "";
-            socket.emit("create channel", channelName);
+            sumbitChannel();
         }
     });
 
     // functionality for sending a message
-    document.getElementById("message-btn").addEventListener("click", function () {
-        let message = messageBox.value;
-        if (message == "") {
-            return;
-        }
-        messageBox.value = "";
+    document.querySelector("#message-btn").addEventListener("click", function () {
+        submitMessage();
         if (window.innerWidth > 499) {
             messageBox.focus();
         }
-        socket.emit("submit msg", message, nickname, currentRoom);
     });
 
     messageBox.addEventListener("keyup", function () {
         if (event.key === "Enter") {
-            let message = messageBox.value;
-            if (message == "") {
-                return;
-            }
-            messageBox.value = "";
-            socket.emit("submit msg", message, nickname, currentRoom);
+            submitMessage();
         }
     });
 
@@ -90,7 +67,7 @@ socket.on("connect", function () {
 // set up any newly created channel to accept click event
 socket.on("broadcast channel", function (channelName) {
     // create div for channel
-    let newDiv = document.createElement("div");
+    const newDiv = document.createElement("div");
     newDiv.innerText = channelName;
     leftSidebar.append(newDiv);
     // set up newly created channel to accept click event
@@ -106,8 +83,8 @@ socket.on("render room", function (messages) {
     for (msg of messages) {
         const nameTime = document.createElement("li");
         const text = document.createElement("li");
-        var localTime = new Date(msg["timestamp"]);
-        localTimeParsed = localTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+        const localTime = new Date(msg["timestamp"]);
+        const localTimeParsed = localTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
         nameTime.innerHTML = `<span>${msg["nickname"]}</span> ${localTimeParsed}:`;
         text.innerText = `${msg["message"]}`;
         nameTime.classList.add("name-time");
@@ -120,8 +97,8 @@ socket.on("render room", function (messages) {
 });
 
 socket.on("broadcast msg", function (message, nickname, timestamp) {
-    var localTime = new Date(timestamp);
-    localTimeParsed = localTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+    const localTime = new Date(timestamp);
+    const localTimeParsed = localTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
     const nameTime = document.createElement("li");
     const text = document.createElement("li");
     nameTime.innerHTML = `<span>${nickname}</span> ${localTimeParsed}:`;
@@ -132,7 +109,7 @@ socket.on("broadcast msg", function (message, nickname, timestamp) {
     chatMessages.append(nameTime);
     chatMessages.append(text);
     // keep chat scrolled to the bottom unless the user is scrolled up to view previous messages
-    let messageHeight = chatBox.scrollTop + text.offsetHeight + nameTime.offsetHeight;
+    const messageHeight = chatBox.scrollTop + text.offsetHeight + nameTime.offsetHeight;
     if (messageHeight >= (chatBox.scrollHeight - chatBox.clientHeight)) {
         chatBox.scrollTop = chatBox.scrollHeight - chatBox.clientHeight;
     }
@@ -154,14 +131,11 @@ socket.on("disconnected", function (nickname) {
     chatBox.scrollTop = chatBox.scrollHeight - chatBox.clientHeight;
 });
 
-const initChannel = function(self, channelName) {
+function initChannel(self, channelName) {
     if (self.innerText !== currentRoom) {
-        // update page title to reflect new channel
         document.title = "Flack " + self.innerText;
-        // set message placeholder to reflect current channel
         messageBox.setAttribute("placeholder", "Message " + self.innerText);
-        // style channels to reflect selection
-        let channels = document.querySelectorAll(".div1 div");
+        const channels = document.querySelectorAll(".div1 div");
         for (channel of channels) {
             channel.classList.remove("selected-channel");
         }
@@ -171,9 +145,27 @@ const initChannel = function(self, channelName) {
         if (window.innerWidth > 499) {
             messageBox.focus();
         }
-        // join room
         socket.emit("leave", currentRoom);
         currentRoom = channelName;
         socket.emit("join", currentRoom, nickname);
     }
+}
+
+function sumbitChannel() {
+    let channelName = channelBox.value;
+    if (channelName == "") {
+        return;
+    }
+    channelName = channelName.toLowerCase();
+    channelBox.value = "";
+    socket.emit("create channel", channelName);
+}
+
+function submitMessage() {
+    const message = messageBox.value;
+    if (message == "") {
+        return;
+    }
+    messageBox.value = "";
+    socket.emit("submit msg", message, nickname, currentRoom);
 }
