@@ -1,7 +1,8 @@
 var socket = io();
 
 const leftSidebar = document.querySelector(".div1");
-const messageInput = document.querySelector(".div4 input");
+const messageBox = document.querySelector(".div4 input");
+const channelBox = document.getElementById("new-channel");
 
 // nickname and currentRoom taken from index.html
 
@@ -13,7 +14,7 @@ socket.on("connect", function () {
     }
 
     socket.emit("join", currentRoom, nickname);
-    messageInput.setAttribute("placeholder", "Message " + currentRoom);
+    messageBox.setAttribute("placeholder", "Message " + currentRoom);
 
     socket.emit("get channels");
     socket.on("receive channels", function (currentChannels) {
@@ -35,50 +36,48 @@ socket.on("connect", function () {
     });
 
     // functionality for channel creation
-    document.querySelectorAll("button")[0].addEventListener("click", function () {
-        let channelName = document.getElementById("new-channel").value;
+    document.getElementById("channel-btn").addEventListener("click", function () {
+        let channelName = channelBox.value;
         if (channelName == "") {
             return;
         }
-        channelName = channelName;
         channelName = channelName.toLowerCase();
-        document.getElementById("new-channel").value = "";
+        channelBox.value = "";
         socket.emit("create channel", channelName);
     });
 
     document.querySelector(".div2 input").addEventListener("keyup", function () {
         if (event.key === "Enter") {
-            let channelName = document.getElementById("new-channel").value;
+            let channelName = channelBox.value;
             if (channelName == "") {
                 return;
             }
-            channelName = channelName;
             channelName = channelName.toLowerCase();
-            document.getElementById("new-channel").value = "";
+            channelBox.value = "";
             socket.emit("create channel", channelName);
         }
     });
 
     // functionality for sending a message
-    document.querySelectorAll("button")[1].addEventListener("click", function () {
-        let message = messageInput.value;
+    document.getElementById("message-btn").addEventListener("click", function () {
+        let message = messageBox.value;
         if (message == "") {
             return;
         }
-        messageInput.value = "";
+        messageBox.value = "";
         if (window.innerWidth > 499) {
-            messageInput.focus();
+            messageBox.focus();
         }
         socket.emit("submit msg", message, nickname, currentRoom);
     });
 
-    messageInput.addEventListener("keyup", function () {
+    messageBox.addEventListener("keyup", function () {
         if (event.key === "Enter") {
-            let message = messageInput.value;
+            let message = messageBox.value;
             if (message == "") {
                 return;
             }
-            messageInput.value = "";
+            messageBox.value = "";
             socket.emit("submit msg", message, nickname, currentRoom);
         }
     });
@@ -164,7 +163,7 @@ const initChannel = function(self, channelName) {
         // update page title to reflect new channel
         document.title = "Flack " + self.innerText;
         // set message placeholder to reflect current channel
-        messageInput.setAttribute("placeholder", "Message " + self.innerText);
+        messageBox.setAttribute("placeholder", "Message " + self.innerText);
         // style channels to reflect selection
         let channels = document.querySelectorAll(".div1 div");
         for (channel of channels) {
@@ -174,7 +173,7 @@ const initChannel = function(self, channelName) {
         // on larger browsers, keep message box in focus regardless of channel switch
         // needed because on phones, focusing of the input brings up the keyboard
         if (window.innerWidth > 499) {
-            messageInput.focus();
+            messageBox.focus();
         }
         // join room
         socket.emit("leave", currentRoom);
