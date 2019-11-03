@@ -6,22 +6,22 @@
         <div class="logo-div">
             <img src="/static/flack-sm.jpg" alt="flack logo">
         </div>
-        <div class="div1">
+        <div class="div1" id="left-side-bar">
             <h5>channels</h5>
         </div>
         <div class="div2">
-            <label for="new-channel" class="hide">Create Channel</label>
-            <input type="text" placeholder="Create Channel.." id="new-channel">
+            <label for="channel-box" class="hide">Create Channel</label>
+            <input type="text" placeholder="Create Channel.." id="channel-box">
             <button id="channel-btn">+</button>
         </div>
-        <div class="div3">
-            <ul id="messages">
+        <div class="div3" id="chat-box">
+            <ul id="chat-messages">
             </ul>
         </div>
         <div class="div4">
             <button id="message-btn">></button>
-            <label for="msgbox" class="hide">Enter Message</label>
-            <input type="text" placeholder="Message #general" autofocus>
+            <label for="message-box" class="hide">Enter Message</label>
+            <input type="text" placeholder="Message #general" id="message-box" autofocus>
         </div>
     </div>
     <script>

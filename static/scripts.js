@@ -1,8 +1,10 @@
 var socket = io();
 
-const leftSidebar = document.querySelector(".div1");
-const messageBox = document.querySelector(".div4 input");
-const channelBox = document.getElementById("new-channel");
+const leftSidebar = document.querySelector("#left-side-bar");
+const channelBox = document.querySelector("#channel-box");
+const messageBox = document.querySelector("#message-box");
+const chatBox = document.querySelector("#chat-box");
+const chatMessages = document.querySelector("#chat-messages");
 
 // nickname and currentRoom taken from index.html
 
@@ -98,9 +100,8 @@ socket.on("broadcast channel", function (channelName) {
 });
 
 socket.on("render room", function (messages) {
-    let messageList = document.querySelector("#messages");
-    while (messageList.hasChildNodes()) {
-        messageList.removeChild(messageList.lastChild);
+    while (chatMessages.hasChildNodes()) {
+        chatMessages.removeChild(chatMessages.lastChild);
     }
     for (msg of messages) {
         const nameTime = document.createElement("li");
@@ -112,17 +113,15 @@ socket.on("render room", function (messages) {
         nameTime.classList.add("name-time");
         text.classList.add("text");
 
-        document.querySelector("#messages").append(nameTime);
-        document.querySelector("#messages").append(text);
+        chatMessages.append(nameTime);
+        chatMessages.append(text);
     }
-    let messageBody = document.querySelector('.div3');
-    messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+    chatBox.scrollTop = chatBox.scrollHeight - chatBox.clientHeight;
 });
 
 socket.on("broadcast msg", function (message, nickname, timestamp) {
     var localTime = new Date(timestamp);
     localTimeParsed = localTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
-    var messageBody = document.querySelector('.div3');
     const nameTime = document.createElement("li");
     const text = document.createElement("li");
     nameTime.innerHTML = `<span>${nickname}</span> ${localTimeParsed}:`;
@@ -130,13 +129,12 @@ socket.on("broadcast msg", function (message, nickname, timestamp) {
     nameTime.classList.add("name-time");
     text.classList.add("text");
 
-    document.querySelector("#messages").append(nameTime);
-    document.querySelector("#messages").append(text);
-    var messageBody = document.querySelector('.div3');
+    chatMessages.append(nameTime);
+    chatMessages.append(text);
     // keep chat scrolled to the bottom unless the user is scrolled up to view previous messages
-    let messageHeight = messageBody.scrollTop + text.offsetHeight + nameTime.offsetHeight;
-    if (messageHeight >= (messageBody.scrollHeight - messageBody.clientHeight)) {
-        messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+    let messageHeight = chatBox.scrollTop + text.offsetHeight + nameTime.offsetHeight;
+    if (messageHeight >= (chatBox.scrollHeight - chatBox.clientHeight)) {
+        chatBox.scrollTop = chatBox.scrollHeight - chatBox.clientHeight;
     }
 });
 
@@ -144,18 +142,16 @@ socket.on("on connection", function (nickname) {
     const li = document.createElement("li");
     li.innerText = `${nickname} has connected`;
     li.classList.add("connection");
-    document.querySelector("#messages").append(li);
-    let messageBody = document.querySelector('.div3');
-    messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+    chatMessages.append(li);
+    chatBox.scrollTop = chatBox.scrollHeight - chatBox.clientHeight;
 });
 
 socket.on("disconnected", function (nickname) {
     const li = document.createElement("li");
     li.innerText = `${nickname} has disconnected`;
     li.classList.add("disconnection");
-    document.querySelector("#messages").append(li);
-    let messageBody = document.querySelector('.div3');
-    messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+    chatMessages.append(li);
+    chatBox.scrollTop = chatBox.scrollHeight - chatBox.clientHeight;
 });
 
 const initChannel = function(self, channelName) {
