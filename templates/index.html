@@ -1,33 +1,49 @@
-{% extends "template.html" %}
-{% block title %}Flack {{ current_room }}{% endblock %}
-    <meta name="description" content="Flack - a real time chat app">
+{% extends "template.html" %} {% block title %}Flack {{ current_room }}{%
+endblock %}
+<meta name="description" content="Flack - a real time chat app" />
 {% block body %}
-    <div class="parent">
-        <div class="logo-div">
-            <img src="/static/flack-sm.jpg" alt="flack logo">
-        </div>
-        <div class="div1" id="left-side-bar">
-            <h5>channels</h5>
-        </div>
-        <div class="div2">
-            <label for="channel-box" class="hide">Create Channel</label>
-            <input type="text" placeholder="Create Channel.." id="channel-box">
-            <button id="channel-btn">+</button>
-        </div>
-        <div class="div3" id="chat-box">
-            <ul id="chat-messages">
-            </ul>
-        </div>
-        <div class="div4">
-            <button id="message-btn">></button>
-            <label for="message-box" class="hide">Enter Message</label>
-            <input type="text" placeholder="Message #general" id="message-box" autofocus>
-        </div>
-    </div>
-    <script>
-        var nickname = "{{ nickname }}";
-        var currentRoom = "{{ current_room }}";
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
-    <script src="/static/scripts.js"></script>
+<div class="parent">
+  <div class="logo-div">
+    <img src="/static/flack-sm.jpg" alt="flack logo" />
+  </div>
+  <div class="div1" id="left-side-bar">
+    <h5>channels</h5>
+  </div>
+  <div class="div2">
+    <label for="channel-box" class="hide">Create Channel</label>
+    <input type="text" placeholder="Create Channel.." id="channel-box" />
+    <button id="channel-btn">+</button>
+  </div>
+  <div class="div3" id="chat-box">
+    <ul id="chat-messages"></ul>
+  </div>
+  <div class="div4">
+    <button id="message-btn">></button>
+    <label for="message-box" class="hide">Enter Message</label>
+    <input
+      type="text"
+      placeholder="Message #general"
+      id="message-box"
+      autofocus
+    />
+  </div>
+</div>
+<div id="splash">
+  <div class="loading">loading channels</div>
+</div>
+<script>
+  var nickname = "{{ nickname }}";
+  var currentRoom = "{{ current_room }}";
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+<script src="/static/scripts.js"></script>
+<script>
+  setTimeout(function() {
+    document.querySelector("#splash").classList.toggle("zeroOpacity");
+  }, 1500);
+
+  setTimeout(function() {
+    document.querySelector("#splash").style.display = "none";
+  }, 2000);
+</script>
 {% endblock %}
